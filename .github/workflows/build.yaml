@@ -25,3 +25,20 @@ jobs:
                   owner: ztimson
                   registry: https://registry.npmjs.org/
                   token: ${{secrets.NPM_TOKEN}}
+    tag:
+        name: Tag Version
+        needs: build
+        if: ${{github.ref_name}} == 'release'
+        runs-on: ubuntu-latest
+        container: node:alpine
+        steps:
+            -   name: Clone Repository
+                uses: ztimson/actions/clone@develop
+
+            -   name: Get Version Number
+                run: echo "VERSION=$(cat server/package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')" >> $GITHUB_ENV
+
+            -   name: Tag Version
+                uses: ztimson/actions/tag@develop
+                with:
+                    tag: ${{env.VERSION}}

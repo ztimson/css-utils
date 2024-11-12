@@ -4,7 +4,7 @@
 	"description": "CSS Utility Classes",
 	"readme": "README.md",
 	"scripts": {
-		"build": "npx sass src/main.scss > dist/main.css && npx sass src/main.scss --style compressed > dist/main.min.css"
+		"build": "npx sass src/main.scss > dist/css-utils.css && npx sass src/main.scss --style compressed > dist/css-utils.min.css"
 	},
 	"repository": {
 		"type": "git",
