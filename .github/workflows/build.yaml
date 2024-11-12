@@ -36,7 +36,7 @@ jobs:
                 uses: ztimson/actions/clone@develop
 
             -   name: Get Version Number
-                run: echo "VERSION=$(cat server/package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')" >> $GITHUB_ENV
+                run: echo "VERSION=$(cat package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')" >> $GITHUB_ENV
 
             -   name: Tag Version
                 uses: ztimson/actions/tag@develop
