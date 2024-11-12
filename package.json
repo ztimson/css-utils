@@ -1,17 +1,18 @@
 {
-  "name": "@ztimson/css-utils",
-  "version": "1.0.0",
-  "description": "CSS Utility Classes",
-  "scripts": {
-    "build": "npx sass src/main.scss > dist/main.css && npx sass src/main.scss --style compressed > dist/main.min.css"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git.zakscode.com:ztimson/css-utils"
-  },
-  "author": "ztimson",
-  "license": "MIT",
-  "devDependencies": {
-    "sass": "^1.80.6"
-  }
+	"name": "@ztimson/css-utils",
+	"version": "1.0.0",
+	"description": "CSS Utility Classes",
+	"readme": "README.md",
+	"scripts": {
+		"build": "npx sass src/main.scss > dist/main.css && npx sass src/main.scss --style compressed > dist/main.min.css"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git.zakscode.com:ztimson/css-utils"
+	},
+	"author": "ztimson",
+	"license": "MIT",
+	"devDependencies": {
+		"sass": "^1.80.6"
+	}
 }

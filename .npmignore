@@ -1,0 +1,7 @@
+.github
+.idea
+node_modules
+.editorconfig
+.gitignore
+CODEOWNERS
+index.html
