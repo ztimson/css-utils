@@ -14,3 +14,4 @@ COPY --from=build /app/dist /usr/share/nginx/html/dist
 COPY src /usr/share/nginx/html/src
 COPY index.html /usr/share/nginx/html
 COPY wave.webp /usr/share/nginx/html
+COPY favicon.webp /usr/share/nginx/html
