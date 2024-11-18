@@ -1,13 +1,997 @@
 <!Doctype>
 
-<html lang="en">
+<html lang="en" class="fix">
 	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" class="momentum-description" content="Enterprise Resource Planning" />
+
 		<title>CSS Utils</title>
 
-		<style href="./dist/main.css" />
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+		<link href="./dist/css-utils.css" rel="stylesheet">
+		<style>
+			* {
+				font-family: Roboto, sans-serif !important;
+				scroll-behavior: smooth;
+			}
+
+			ul,li {
+				text-decoration: none;
+				list-style: none;
+				margin: 0;
+			}
+
+			.animate-example {
+				--theme-animation: 1.5s;
+
+
+				left: 10px;
+				top: calc(50% - 10px);
+				opacity: 100%;
+			}
+
+			.animate-example.animated {
+				left: 110px;
+				background: var(--theme-accent);
+				transform: rotate(180deg);
+				opacity: 25%;
+			}
+
+			.box {
+				width: 20px;
+				height: 20px;
+				background: var(--theme-primary);
+			}
+
+			.inline-code {
+				display: inline-block;
+				padding: 5px;
+				background: #f3f3f3;
+			}
+		</style>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/js.min.js"></script>
+		<script>hljs.highlightAll();</script>
 	</head>
 
-	<body>
+	<body class="theme-light p-3 flex-r justify-center">
+		<div class="clamp flex-c z-1">
+			<div id="top" class="flex-grow-1 bg-clear shadow p-3">
+				<h1 class="mb-0">@ztimson/css-utils</h1>
+				<hr class="mb-3">
+				<p>CSS Utils is a css library based on bootstrap. At 1/3 the size, its all the utilities without the bloat.</p>
+				<p>Some additional utilities have been added & a few have been renamed to conform to convention or remove redundancy.</p>
+			</div>
 
+			<h2 id="setup" class="mt-4 mb-3">Setup</h2>
+			<div class="flex-grow-1 bg-clear shadow p-3">
+				<h3 id="install">Install</h3>
+				<h4>NPM</h4>
+				<pre><code class="language-scss">
+// Install
+npm install @ztimson/css-utils
+
+// Import one of: (CSS/minified/SCSS)
+@import url("@ztimson/css-utils/dist/css-utils.css");
+@import url("@ztimson/css-utils/dist/css-utils.min.css");
+@import url("@ztimson/css-utils/src/main.scss");
+				</code></pre>
+				<br>
+				<h4>Script Tags</h4>
+				<pre><code class="language-html">
+&lt;!-- Include one of --&gt;
+&lt;link rel="stylesheet" href="https://css.zakscode.com/dist/css-utils.css" &gt;&lt;/link&gt;
+&lt;link rel="stylesheet" href="https://css.zakscode.com/dist/css-utils.min.css" &gt;&lt;/link&gt;
+&lt;link rel="stylesheet" href="https://css.zakscode.com/src/main.scss" &gt;&lt;/link&gt;
+				</code></pre>
+			</div>
+			<div class="flex-grow-1 bg-clear shadow p-3 mt-4">
+				<h3 id="theming">Theming</h3>
+				<p>Theming is minimal since its so opinionated. Its all done through CSS variables allowing runtime manipulation without having to recompile.</p>
+				<pre><code class="language-scss">
+// Theme colors -- what ever you like
+--theme-backdrop: #dddddd; // Background color of body, not to be confused with `--theme-clear`
+--theme-primary: #ff0000;
+--theme-accent: #0000ff;
+--theme-info: #6157cc;
+--theme-success: #65c147;
+--theme-warn: #d88750;
+--theme-danger: #bf4f4f;
+--theme-black: black;
+--theme-white: white;
+
+// Misc
+--theme-animation: 0.2s linear; // Animation style
+--theme-content-width: 1100px; // Max width of `.clamped` content
+--theme-font: Arial, sans-serif; // Forces font globally
+
+// Light theme
+.theme-light {
+  --theme-clear: #ffffff; // Content background (Usually white or off-black which contrasts --theme-text)
+  --theme-text: #000000; // Text color (Should contrast --theme-clear)
+  --theme-muted: #6c757d; // Muted text color (Should have less than contrast than --theme-text)
+}
+
+// Dark theme
+.theme-dark {
+  --theme-clear: #2e2e2e; // Content background (Usually white or off-black which contrasts --theme-text)
+  --theme-text: #ffffff; // Text color (Should contrast --theme-clear)
+  --theme-muted: #cccccc; // Muted text color (Should have less than contrast than --theme-text)
+}
+
+// Multiple themes can be toggled via CSS classes
+.theme-custom {
+  ...
+}
+				</code></pre>
+
+				<p>The generated breakpoints & margin/padding sizes can also be adjusted through SCSS.</p>
+				<pre><code class="language-scss">
+$breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px); // Device size
+$sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5rem); // Padding/Margin, etc...
+				</code></pre>
+			</div>
+
+			<h2 id="utilities" class="mt-4 mb-3">Utilities</h2>
+			<div class="flex-grow-1 bg-clear shadow p-3">
+				<h3 id="alignment">Alignment</h3>
+				<div class="inline-code">.align-[x|y]-[xs|sm|md|lg|xl]-[start|end]</div>
+				<br><br>
+				<p><span class="inline-code">text-align</span> & <span class="inline-code">vertical-align</span> are used with <span class="inline-code">align-x</span> & <span class="inline-code">align-y</span> respectively.</p>
+				<div class="flex-r">
+					<div class="flex-fill-even m-1 b-1 p-1">
+						<div class="align-x-start">
+							<div class="b-1 inline-code">.align-x-start</div>
+						</div>
+						<div class="align-x">
+							<div class="b-1 inline-code">.align-x</div>
+						</div>
+						<div class="align-x-end">
+							<div class="b-1 inline-code">.align-x-end</div>
+						</div>
+					</div>
+					<table class="flex-fill-even b-1 m-1">
+						<tr>
+							<td class="align-y-end align-x-start">
+								<span class="b-1 inline-code">.align-y-end</span>
+							</td>
+							<td class="align-y align-x">
+								<span class="b-1 inline-code">.align-y</span>
+							</td>
+							<td class="align-y-start align-x-end">
+								<span class="b-1 inline-code">.align-y-start</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="animations">Animations</h3>
+				<div class="inline-code">.animate-[color|none|opacity|pos|trans]</div>
+				<br><br>
+				<p>Style changes will be animated using the <span class="inline-code">--theme-animation</span> variable</p>
+				<div class="flex-r align-items-center mb-2">
+					<div>
+						<p class="m-0"><span class="inline-code">.animate</span></p>
+					</div>
+					<div class="flex-fill-even pos-rel">
+						<div class="box animate animate-example pos-abs"></div>
+					</div>
+				</div>
+				<div class="flex-r align-items-center mb-2">
+					<div>
+						<p class="m-0"><span class="inline-code">.animate-color</span></p>
+					</div>
+					<div class="flex-fill-even pos-rel">
+						<div class="box animate-color animate-example pos-abs"></div>
+					</div>
+				</div>
+				<div class="flex-r align-items-center mb-2">
+					<div>
+						<p class="m-0"><span class="inline-code">.animate-opacity</span></p>
+					</div>
+					<div class="flex-fill-even pos-rel">
+						<div class="box animate-opacity animate-example pos-abs"></div>
+					</div>
+				</div>
+				<div class="flex-r align-items-center mb-2">
+					<div>
+						<p class="m-0"><span class="inline-code">.animate-none</span></p>
+					</div>
+					<div class="flex-fill-even pos-rel">
+						<div class="box animate animate-none animate-example pos-abs"></div>
+					</div>
+				</div>
+				<div class="flex-r align-items-center mb-2">
+					<div>
+						<p class="m-0"><span class="inline-code">.animate-pos</span></p>
+					</div>
+					<div class="flex-fill-even pos-rel">
+						<div class="box animate-pos animate-example pos-abs"></div>
+					</div>
+				</div>
+				<div class="flex-r align-items-center mb-2">
+					<div>
+						<p class="m-0"><span class="inline-code">.animate-trans</span></p>
+					</div>
+					<div class="flex-fill-even pos-rel">
+						<div class="box animate-trans animate-example pos-abs"></div>
+					</div>
+				</div>
+
+				<script>
+					const targets = document.querySelectorAll('.animate-example');
+					let animated = true;
+					setInterval(() => {
+						targets.forEach(t => t.classList[animated ? 'remove' : 'add']('animated'))
+						animated = !animated;
+					}, 3000);
+				</script>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="borders">Borders</h3>
+				<h4 class="fs-3">Color</h4>
+				<div class="inline-code">.b-[accent|black|danger|info|muted|primary|success|text|warn|white]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 b-accent m-2 p-2 inline-code flex-r align-items-center justify-center">.b-accent</div>
+					<div class="b-1 b-black m-2 p-2 inline-code flex-r align-items-center justify-center">.b-black</div>
+					<div class="b-1 b-danger m-2 p-2 inline-code flex-r align-items-center justify-center">.b-danger</div>
+					<div class="b-1 b-info m-2 p-2 inline-code flex-r align-items-center justify-center">.b-info</div>
+					<div class="b-1 b-muted m-2 p-2 inline-code flex-r align-items-center justify-center">.b-muted</div>
+					<div class="b-1 b-primary m-2 p-2 inline-code flex-r align-items-center justify-center">.b-primary</div>
+					<div class="b-1 b-success m-2 p-2 inline-code flex-r align-items-center justify-center">.b-success</div>
+					<div class="b-1 b-text m-2 p-2 inline-code flex-r align-items-center justify-center">.b-text</div>
+					<div class="b-1 b-warn m-2 p-2 inline-code flex-r align-items-center justify-center">.b-warn</div>
+					<div class="b-1 b-white m-2 p-2 inline-code flex-r align-items-center justify-center">.b-white</div>
+				</div>
+				<br>
+				<h4 class="fs-3">Radius</h4>
+				<div class="inline-code">.br-[0-5]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 br-0 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-0</div>
+					<div class="b-1 br-1 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-1</div>
+					<div class="b-1 br-2 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-2</div>
+					<div class="b-1 br-3 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-3</div>
+					<div class="b-1 br-4 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-4</div>
+					<div class="b-1 br-5 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-5</div>
+					<div class="b-1 br-pill m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 120px">.br-pill</div>
+					<div class="b-1 br-circle m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.br-circle</div>
+				</div>
+				<br>
+				<h4 class="fs-3">Style</h4>
+				<div class="inline-code">.b-[xs|sm|md|lg|xl]-[dash|dot|double|none|solid]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 b-dash m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-dash</div>
+					<div class="b-1 b-dot m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-dot</div>
+					<div class="b-1 b-double m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-double</div>
+					<div class="b-1 b-none m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-none</div>
+					<div class="b-1 b-solid m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-solid</div>
+				</div>
+				<br>
+				<h4 class="fs-3">Width</h4>
+				<div class="inline-code">.b[b|e|s|t]-[xs|sm|md|lg|xl]-[0-5]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-0 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-0</div>
+					<div class="b-1 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-1</div>
+					<div class="b-2 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-2</div>
+					<div class="b-3 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-3</div>
+					<div class="b-4 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-4</div>
+					<div class="b-5 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.b-5</div>
+				</div>
+				<div class="flex-r flex-wrap">
+					<div class="bb-5 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.bb-5</div>
+					<div class="be-5 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.be-5</div>
+					<div class="bs-5 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.bs-5</div>
+					<div class="bt-5 m-2 inline-code flex-r align-items-center justify-center" style="height: 90px; width: 90px">.bt-5</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="colors">Colors</h3>
+				<h4 class="fs-3">Background</h4>
+				<div class="inline-code">.bg-[accent|backdrop|black|clear|danger|info|muted|primary|success|transparent|text|warn|white]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 bg-accent m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-accent</div>
+					<div class="b-1 bg-backdrop m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-backdrop</div>
+					<div class="b-1 bg-black fg-white m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-black</div>
+					<div class="b-1 bg-clear m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-clear</div>
+					<div class="b-1 bg-danger m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-danger</div>
+					<div class="b-1 bg-info m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-info</div>
+					<div class="b-1 bg-muted m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-muted</div>
+					<div class="b-1 bg-primary m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-primary</div>
+					<div class="b-1 bg-success m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-success</div>
+					<div class="b-1 bg-transparent m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-transparent</div>
+					<div class="b-1 bg-text fg-clear m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-text</div>
+					<div class="b-1 bg-warn m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-warn</div>
+					<div class="b-1 bg-white m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-white</div>
+				</div>
+				<br>
+				<h4 class="fs-3">Borders</h4>
+				<div class="inline-code">.b-[accent|black|clear|danger|info|muted|primary|success|text|warn|white]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 b-accent m-2 p-2 inline-code flex-r align-items-center justify-center">.b-accent</div>
+					<div class="b-1 b-black m-2 p-2 inline-code flex-r align-items-center justify-center">.b-black</div>
+					<div class="b-1 b-danger m-2 p-2 inline-code flex-r align-items-center justify-center">.b-danger</div>
+					<div class="b-1 b-info m-2 p-2 inline-code flex-r align-items-center justify-center">.b-info</div>
+					<div class="b-1 b-muted m-2 p-2 inline-code flex-r align-items-center justify-center">.b-muted</div>
+					<div class="b-1 b-primary m-2 p-2 inline-code flex-r align-items-center justify-center">.b-primary</div>
+					<div class="b-1 b-success m-2 p-2 inline-code flex-r align-items-center justify-center">.b-success</div>
+					<div class="b-1 b-text m-2 p-2 inline-code flex-r align-items-center justify-center">.b-text</div>
+					<div class="b-1 b-warn m-2 p-2 inline-code flex-r align-items-center justify-center">.b-warn</div>
+					<div class="b-1 b-white m-2 p-2 inline-code flex-r align-items-center justify-center">.b-white</div>
+				</div>
+				<br>
+				<h4 class="fs-3">Foreground</h4>
+				<div class="inline-code">.fg-[accent|black|danger|info|muted|primary|success|text|warn|white]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 fg-accent m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-accent</div>
+					<div class="b-1 fg-black m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-black</div>
+					<div class="b-1 fg-clear m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-clear</div>
+					<div class="b-1 fg-danger m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-danger</div>
+					<div class="b-1 fg-info m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-info</div>
+					<div class="b-1 fg-muted m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-muted</div>
+					<div class="b-1 fg-primary m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-primary</div>
+					<div class="b-1 fg-success m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-success</div>
+					<div class="b-1 fg-text m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-text</div>
+					<div class="b-1 fg-warn m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-warn</div>
+					<div class="b-1 fg-white m-2 p-2 inline-code flex-r align-items-center justify-center">.fg-white</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="cursors">Cursors</h3>
+				<div class="inline-code">.curs-[alias|auto|cell|col-resize|copy|crosshair|default|grab|grabbing|help|hover|move|not-allowed|pointer|progress|row-resize|text|none|wait|vertical-text|zoom-in|zoom-out]</div>
+				<br><br>
+				<div class="flex-r flex-wrap">
+					<div class="b-1 b-1 b-1 curs-alias m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-alias</div>
+					<div class="b-1 b-1 b-1 curs-auto m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-auto</div>
+					<div class="b-1 b-1 b-1 curs-cell m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-cell</div>
+					<div class="b-1 b-1 b-1 curs-col-resize m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-col-resize</div>
+					<div class="b-1 b-1 b-1 curs-copy m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-copy</div>
+					<div class="b-1 b-1 b-1 curs-crosshair m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-crosshair</div>
+					<div class="b-1 b-1 b-1 curs-default m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-default</div>
+					<div class="b-1 b-1 b-1 curs-grab m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-grab</div>
+					<div class="b-1 b-1 b-1 curs-grabbing m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-grabbing</div>
+					<div class="b-1 b-1 b-1 curs-help m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-help</div>
+					<div class="b-1 b-1 b-1 curs-hover m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-hover</div>
+					<div class="b-1 b-1 b-1 curs-move m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-move</div>
+					<div class="b-1 b-1 b-1 curs-not-allowed m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-not-allowed</div>
+					<div class="b-1 b-1 b-1 curs-pointer m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-pointer</div>
+					<div class="b-1 b-1 b-1 curs-progress m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-progress</div>
+					<div class="b-1 b-1 b-1 curs-row-resize m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-row-resize</div>
+					<div class="b-1 b-1 b-1 curs-text m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-text</div>
+					<div class="b-1 b-1 b-1 curs-none m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-none</div>
+					<div class="b-1 b-1 b-1 curs-wait m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-wait</div>
+					<div class="b-1 b-1 b-1 curs-vertical-text m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-vertical-text</div>
+					<div class="b-1 b-1 b-1 curs-zoom-in m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-zoom-in</div>
+					<div class="b-1 b-1 b-1 curs-zoom-out m-2 p-2 inline-code flex-r align-items-center justify-center">.curs-zoom-out</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="display">Display</h3>
+				<div class="inline-code">.d-[xs|sm|md|lg|xl]-[block|flex|grid|inline|inline-block|inline-flex|inline-grid|none|table|table-cell|table-row]</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="flex">Flex</h3>
+				<h4>Direction</h4>
+				<div class="inline-code">.flex-[xs|sm|md|lg|xl]-[c|r|rc|rr]</div>
+				<br><br>
+				<div class="b-1 flex-r">
+					<div class="flex-c be-1 flex-fill-even">
+						<div class="p-2 bb-1">.flex-c</div>
+						<div class="flex-c p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c flex-fill-even">
+						<div class="p-2 bb-1">.flex-cr</div>
+						<div class="flex-cr p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="b-1 flex-r">
+					<div class="flex-c be-1 flex-fill-even">
+						<div class="p-2 bb-1">.flex-r</div>
+						<div class="flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c flex-fill-even">
+						<div class="p-2 bb-1">.flex-rr</div>
+						<div class="flex-rr p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<h4>Justify / Align</h4>
+				<div class="inline-code">.justify-[xs|sm|md|lg|xl]-[around|between|center|end|evenly|start]</div>
+				<br><br>
+				<div class="b-1 flex-r">
+					<div class="flex-c be-1 flex-fill-even">
+						<div class="p-2 bb-1">.justify-start</div>
+						<div class="justify-start flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c be-1 flex-fill-even">
+						<div class="p-2 bb-1">.justify-center</div>
+						<div class="justify-center flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c flex-fill-even">
+						<div class="p-2 bb-1">.justify-end</div>
+						<div class="justify-end flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+				</div>
+				<div class="b-1 flex-r">
+					<div class="flex-c be-1 flex-fill-even">
+						<div class="p-2 bb-1">.justify-around</div>
+						<div class="justify-around flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c be-1 flex-fill-even">
+						<div class="p-2 bb-1">.justify-between</div>
+						<div class="justify-between flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c flex-fill-even">
+						<div class="p-2 bb-1">.justify-evenly</div>
+						<div class="justify-evenly flex-r p-2">
+							<div class="inline-code b-1">Item 1</div>
+							<div class="inline-code b-1">Item 2</div>
+							<div class="inline-code b-1">Item 3</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="inline-code">.align-[xs|sm|md|lg|xl]-[content|items|self]-[baseline|center|end|start|stretch]</div>
+				<br><br>
+				<div class="flex-r b-1 p-2" style="height: 100px">
+					<div class="align-self-baseline inline-codeDockerfile b-1">.align-self-baseline</div>
+					<div class="align-self-center inline-code b-1">.align-self-center</div>
+					<div class="align-self-end inline-code b-1">.align-self-end</div>
+					<div class="align-self-start inline-code b-1">.align-self-start</div>
+					<div class="align-self-stretch inline-code b-1">.align-self-stretch</div>
+				</div>
+				<br>
+				<h4>Order</h4>
+				<div class="inline-code">.order-[xs|sm|md|lg|xl]-[0-5]</div>
+				<br><br>
+				<div class="flex-r flex-nowrap">
+					<div class="order-5 inline-code b-1">.order-5</div>
+					<div class="order-4 inline-code b-1">.order-4</div>
+					<div class="order-3 inline-code b-1">.order-3</div>
+					<div class="order-2 inline-code b-1">.order-2</div>
+					<div class="order-1 inline-code b-1">.order-1</div>
+					<div class="order-0 inline-code b-1">.order-0</div>
+				</div>
+				<br>
+				<h4>Size</h4>
+				<div class="inline-code">.flex-[xs|sm|md|lg|xl]-[grow|shrink]-[0-3]</div>
+				<br><br>
+				<div class="flex-r">
+					<div class="flex-grow-1 b-1 inline-code">.flex-grow-1</div>
+					<div class="flex-shrink-1 b-1 inline-code">.flex-shrink-1</div>
+				</div>
+				<div class="flex-r">
+					<div class="flex-grow-1 b-1 inline-code">.flex-grow-1</div>
+					<div class="flex-grow-2 b-1 inline-code">.flex-grow-2</div>
+				</div>
+				<br>
+				<div class="inline-code">.flex-fill-[even]</div>
+				<br><br>
+				<div class="flex-r">
+					<div class="flex-fill b-1 inline-code">.flex-fill (Matches content ratio)</div>
+					<div class="flex-fill b-1 inline-code">.flex-fill</div>
+					<div class="flex-fill b-1 inline-code">.flex-fill</div>
+				</div>
+				<div class="flex-r">
+					<div class="flex-fill-even b-1 inline-code">.flex-fill-even (Doesn't match content ratio)</div>
+					<div class="flex-fill-even b-1 inline-code">.flex-fill-even</div>
+					<div class="flex-fill-even b-1 inline-code">.flex-fill-even</div>
+				</div>
+				<br>
+				<h4>Wrap</h4>
+				<div class="inline-code">.flex-[xs|sm|md|lg|xl]-[nowrap|wrap]</div>
+				<br><br>
+				<div class="b-1 flex-r">
+					<div class="flex-c flex-fill-even be-1">
+						<div class="p-2 bb-1">.flex-nowrap</div>
+						<div class="flex-r p-2 flex-nowrap">
+							<div class="inline-code b-1 align-x" style="width: 50%">Item 1</div>
+							<div class="inline-code b-1 align-x" style="width: 50%">Item 2</div>
+							<div class="inline-code b-1 align-x" style="width: 50%">Item 3</div>
+						</div>
+					</div>
+					<div class="flex-c flex-fill-even">
+						<div class="p-2 bb-1">.flex-wrap</div>
+						<div class="flex-r p-2 flex-wrap">
+							<div class="inline-code b-1 align-x" style="width: 50%">Item 1</div>
+							<div class="inline-code b-1 align-x" style="width: 50%">Item 2</div>
+							<div class="inline-code b-1 align-x" style="width: 50%">Item 3</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="float">Float</h3>
+				<div class="inline-code">.float-[xs|sm|md|lg|xl]-[end|none|start]</div>
+				<br><br>
+				<div class="b-1 overflow-hidden">
+					<div class="float-none b-1 m-1 mb-0 inline-code p-2 flex-r align-items-center justify-center">.float-none</div>
+					<div class="float-end b-1 m-1 inline-code p-2 flex-r align-items-center justify-center">.float-end</div>
+					<div class="float-start b-1 m-1 inline-code p-2 flex-r align-items-center justify-center">.float-start</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="font">Font Style</h3>
+				<h4>Decoration</h4>
+				<div class="inline-code">.fs-[italic|line-through|none|underline]</div>
+				<br><br>
+				<div>
+					<span class="fs-italic inline-code b-1 p-2">.fs-italic</span>
+					<span class="fs-line-through inline-code b-1 p-2">.fs-line-through</span>
+					<span class="fs-none inline-code b-1 p-2">.fs-none</span>
+					<span class="fs-underline inline-code b-1 p-2">.fs-underline</span>
+				</div>
+				<br>
+				<h4>Size</h4>
+				<div class="inline-code">.fs-[1-7]</div>
+				<br><br>
+				<div>
+					<span class="fs-1 inline-code b-1 p-2">.fs-1</span>
+					<span class="fs-2 inline-code b-1 p-2">.fs-2</span>
+					<span class="fs-3 inline-code b-1 p-2">.fs-3</span>
+					<span class="fs-4 inline-code b-1 p-2">.fs-4</span>
+					<span class="fs-5 inline-code b-1 p-2">.fs-5</span>
+					<span class="fs-6 inline-code b-1 p-2">.fs-6</span>
+					<span class="fs-7 inline-code b-1 p-2">.fs-7</span>
+				</div>
+				<br>
+				<h4>Weight</h4>
+				<div class="inline-code">.fs-[bold|bolder|lighter|normal]</div>
+				<br><br>
+				<div>
+					<span class="fs-bold inline-code b-1 p-2">.fs-bold</span>
+					<span class="fs-bolder inline-code b-1 p-2">.fs-bolder</span>
+					<span class="fs-lighter inline-code b-1 p-2">.fs-lighter</span>
+					<span class="fs-normal inline-code b-1 p-2">.fs-normal</span>
+				</div>
+				<br>
+				<h4>Wrapping</h4>
+				<div class="inline-code">.fs-[break|nowrap|truncate|wrap]</div>
+				<br><br>
+				<div class="overflow-hidden">
+					<table>
+						<tr>
+							<td class="b-1 p-2 align-y">.fs-break</td>
+							<td class="b-1 p-1 fs-break" style="max-width: 600px">
+								Lorem ipsum dolor sit amet elitr sit. Consetetur dolore in ipsum consetetur in voluptua ut accusam consetetur commodo voluptua amet dolore ipsum. Sit amet sit
+							</td>
+						</tr>
+						<tr>
+							<td class="b-1 p-2 align-y">.fs-nowrap</td>
+							<td class="b-1 p-1 fs-nowrap" style="max-width: 600px">
+								Lorem ipsum dolor sit amet elitr sit. Consetetur dolore in ipsum consetetur in voluptua ut accusam consetetur commodo voluptua amet dolore ipsum. Sit amet sit
+							</td>
+						</tr>
+						<tr>
+							<td class="b-1 p-2 align-y">.fs-truncate</td>
+							<td class="b-1 p-1 fs-truncate" style="max-width: 600px">
+								Lorem ipsum dolor sit amet elitr sit. Consetetur dolore in ipsum consetetur in voluptua ut accusam consetetur commodo voluptua amet dolore ipsum. Sit amet sit
+							</td>
+						</tr>
+						<tr>
+							<td class="b-1 p-2 align-y">.fs-wrap</td>
+							<td class="b-1 p-1 fs-wrap" style="max-width: 600px">
+								Lorem ipsum dolor sit amet elitr sit. Consetetur dolore in ipsum consetetur in voluptua ut accusam consetetur commodo voluptua amet dolore ipsum. Sit amet sit
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="hover">Hover</h3>
+				<div class="inline-code">.curs-hover|.hover</div>
+				<br><br>
+				<div class="flex-r">
+					<div class="curs-hover b-1 m-1 inline-code p-2 flex-r align-items-center justify-center">.curs-hover</div>
+					<div class="hover b-1 m-1 inline-code p-2 flex-r align-items-center justify-center">.hover</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="object-fit">Object Fit</h3>
+				<div class="inline-code">.fit-[contain|cover|fill|scale|none]</div>
+				<br><br>
+				<div class="flex-r">
+					<div class="b-1 m-2 flex-r justify-center align-items-center pos-rel fit-contain overflow-hidden" style="width: 150px; height: 150px;">
+						<img class="fit-contain w-100 h-100" alt="logo" src="./wave.webp" />
+						<span class="shadow-white pos-abs center">.fit-contain</span>
+					</div>
+					<div class="b-1 m-2 flex-r justify-center align-items-center pos-rel fit-cover overflow-hidden" style="width: 150px; height: 150px;">
+						<img class="fit-cover w-100 h-100" alt="logo" src="./wave.webp" />
+						<span class="shadow-white pos-abs center">.fit-cover</span>
+					</div>
+					<div class="b-1 m-2 flex-r justify-center align-items-center pos-rel fit-fill overflow-hidden" style="width: 150px; height: 150px;">
+						<img class="fit-fill w-100 h-100" alt="logo" src="./wave.webp" />
+						<span class="shadow-white pos-abs center">.fit-fill</span>
+					</div>
+					<div class="b-1 m-2 flex-r justify-center align-items-center pos-rel fit-scale overflow-hidden" style="width: 150px; height: 150px;">
+						<img class="fit-scale w-100 h-100" alt="logo" src="./wave.webp" />
+						<span class="shadow-white pos-abs center">.fit-scale</span>
+					</div>
+					<div class="b-1 m-2 flex-r justify-center align-items-center pos-rel fit-none overflow-hidden" style="width: 150px; height: 150px;">
+						<img class="fit-none w-100 h-100" alt="logo" src="./wave.webp" />
+						<span class="shadow-white pos-abs center">.fit-none</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="overflow">Overflow</h3>
+				<div class="inline-code">.overflow-[x|y]-[auto|hidden|scroll|visible]</div>
+				<br><br>
+				<div class="flex-r">
+					<div class="b-1 m-2 overflow-auto" style="width: 150px; height: 150px;">
+						<div style="width: 300px; height: 300px;" class="pos-rel">
+							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-auto</span>
+						</div>
+					</div>
+					<div class="b-1 m-2 overflow-hidden" style="width: 150px; height: 150px;">
+						<div style="width: 300px; height: 300px;" class="pos-rel">
+							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-hidden</span>
+						</div>
+					</div>
+					<div class="b-1 m-2 overflow-scroll" style="width: 150px; height: 150px;">
+						<div style="width: 300px; height: 300px;" class="pos-rel">
+							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-scroll</span>
+						</div>
+					</div>
+					<div class="b-1 m-2 overflow-visible" style="width: 150px; height: 150px;">
+						<div style="width: 300px; height: 300px;" class="pos-rel">
+							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-visible</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="opacity">Opacity</h3>
+				<div class="inline-code">.opacity-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100]</div>
+				<br><br>
+				<div>
+					<div class="b-1 inline-code o-0">.o-0</div>
+					<div class="b-1 inline-code o-10">.o-10</div>
+					<div class="b-1 inline-code o-20">.o-20</div>
+					<div class="b-1 inline-code o-30">.o-30</div>
+					<div class="b-1 inline-code o-40">.o-40</div>
+					<div class="b-1 inline-code o-50">.o-50</div>
+					<div class="b-1 inline-code o-60">.o-60</div>
+					<div class="b-1 inline-code o-70">.o-70</div>
+					<div class="b-1 inline-code o-80">.o-80</div>
+					<div class="b-1 inline-code o-80">.o-90</div>
+					<div class="b-1 inline-code o-100">.o-100</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="position">Position</h3>
+				<div class="inline-code">.pos-[abs|rel|static|stick]</div>
+				<br><br>
+				<h4>Anchor</h4>
+				<div class="inline-code">.anchor-[c|e|s]</div>
+				<br><br>
+				<div class="b-1 w-100 pos-rel" style="height: 150px">
+					<div class="anchor-s inline-code b-1 pos-abs top-25 start-50">.anchor-s</div>
+					<div class="anchor-c inline-code b-1 pos-abs top-50 start-50">.anchor-c</div>
+					<div class="anchor-e inline-code b-1 pos-abs top-75 start-50">.anchor-e</div>
+					<div class="bg-transparent b-0 be-2 b-primary w-50 h-100 pos-abs left-0 top-0"></div>
+				</div>
+				<br>
+				<h4>Position</h4>
+				<div class="inline-code">.[bottom|end|start|top]-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100]</div>
+				<br><br>
+				<div class="b-1 pos-rel w-100" style="height: 150px;">
+					<div class="pos-abs top-0 start-0 inline-code b-1">.top-0 .start-0</div>
+					<div class="pos-abs top-0 end-0 inline-code b-1">.top-0 .end-0</div>
+					<div class="pos-abs top-50 start-50 inline-code b-1">.top-50 .start-50</div>
+					<div class="pos-abs bottom-50 end-50 inline-code b-1">.bottom-50 .end-50</div>
+					<div class="pos-abs bottom-0 start-0 inline-code b-1">.bottom-0 .start-0</div>
+					<div class="pos-abs bottom-0 end-0 inline-code b-1">.bottom-0 .end-0</div>
+					<div class="center inline-code b-1">.center</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="shadows">Shadows</h3>
+				<div class="inline-code">.shadow-[drop|none|white]</div>
+				<br><br>
+				<div class="flex-r">
+					<div class="shadow inline-code p-5 m-2 flex-r align-items-center justify-center">.shadow</div>
+					<div class="pos-rel">
+						<img class="shadow-drop" src="./wave.webp" alt="logo" style="width: 150px; height: auto" >
+						<span class="shadow-white pos-abs center w-100 align-x">
+							.shadow-drop<br>
+							.shadow-white
+						</span>
+					</div>
+					<div class="shadow-none inline-code p-5 m-2 flex-r align-items-center justify-center">.shadow-none</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="size">Size</h3>
+				<div class="flex-c flex-md-r">
+					<div class="flex-fill-even">
+						<h4 id="height">Height</h4>
+						<div class="inline-code">.h-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100]</div>
+						<br><br>
+						<div class="flex-r" style="height: 200px">
+							<div style="width: 60px">
+								<div class="h-100 b-1 inline-code flex-r align-items-center justify-content">.h-100</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-10 b-1 inline-code flex-r align-items-center justify-content">.h-10</div>
+								<div class="h-90 b-1 inline-code flex-r align-items-center justify-content">.h-90</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-20 b-1 inline-code flex-r align-items-center justify-content">.h-20</div>
+								<div class="h-80 b-1 inline-code flex-r align-items-center justify-content">.h-80</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-25 b-1 inline-code flex-r align-items-center justify-content">.h-25</div>
+								<div class="h-75 b-1 inline-code flex-r align-items-center justify-content">.h-75</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-30 b-1 inline-code flex-r align-items-center justify-content">.h-30</div>
+								<div class="h-70 b-1 inline-code flex-r align-items-center justify-content">.h-70</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-34 b-1 inline-code flex-r align-items-center justify-content">.h-34</div>
+								<div class="h-66 b-1 inline-code flex-r align-items-center justify-content">.h-66</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-40 b-1 inline-code flex-r align-items-center justify-content">.h-40</div>
+								<div class="h-60 b-1 inline-code flex-r align-items-center justify-content">.h-60</div>
+							</div>
+							<div style="width: 60px">
+								<div class="h-50 b-1 inline-code flex-r align-items-center justify-content">.h-50</div>
+								<div class="h-50 b-1 inline-code flex-r align-items-center justify-content">.h-50</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex-fill-even mt-3 mt-md-0">
+						<h4 id="width">Width</h4>
+						<div class="inline-code">.w-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100]</div>
+						<br><br>
+						<div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-100 b-1 inline-code flex-r align-items-center justify-content">.h-100</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-10 d-inline-block b-1 inline-code flex-r align-items-center justify-content">.h-10</div>
+								<div class="w-90 d-inline-block b-1 inline-code flex-r align-items-center justify-content">.h-90</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-20 d-inline-block b-1 inline-code flex-r align-items-center justify-content">.h-20</div>
+								<div class="w-80 d-inline-block b-1 inline-code flex-r align-items-center justify-content">.h-80</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-25 b-1 inline-code flex-r align-items-center justify-content">.h-25</div>
+								<div class="w-75 b-1 inline-code flex-r align-items-center justify-content">.h-75</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-30 b-1 inline-code flex-r align-items-center justify-content">.h-30</div>
+								<div class="w-70 b-1 inline-code flex-r align-items-center justify-content">.h-70</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-34 b-1 inline-code flex-r align-items-center justify-content">.h-34</div>
+								<div class="w-66 b-1 inline-code flex-r align-items-center justify-content">.h-66</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-40 b-1 inline-code flex-r align-items-center justify-content">.h-40</div>
+								<div class="w-60 b-1 inline-code flex-r align-items-center justify-content">.h-60</div>
+							</div>
+							<div class="flex-r" style="height: 25px">
+								<div class="w-50 b-1 inline-code flex-r align-items-center justify-content">.h-50</div>
+								<div class="w-50 b-1 inline-code flex-r align-items-center justify-content">.h-50</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="spacing">Spacing</h3>
+				<div>Margin: <span class="inline-code">.m[b|e|s|t|x|y]-[xs|sm|md|lg|xl]-[0-5|auto]</span></div>
+				<br>
+				<div>Padding: <span class="inline-code">.p[b|e|s|t|x|y]-[xs|sm|md|lg|xl]-[0-5]</span></div>
+				<br><br>
+				<div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="m-0 p-0 b-1 bg-success d-inline-block">.m-0<br>.p-0</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="m-1 p-1 b-1 bg-success d-inline-block">.m-1<br>.p-1</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="m-2 p-2 b-1 bg-success d-inline-block">.m-2<br>.p-2</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="m-3 p-3 b-1 bg-success d-inline-block">.m-3<br>.p-3</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="m-4 p-4 b-1 bg-success d-inline-block">.m-4<br>.p-4</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="m-5 p-5 b-1 bg-success d-inline-block">.m-5<br>.p-5</div>
+					</div>
+				</div>
+				<div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="mb-3 pb-3 b-1 bg-success d-inline-block">.mb-3<br>.pb-3</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="me-3 pe-3 b-1 bg-success d-inline-block">.me-3<br>.pe-3</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="ms-3 ps-3 b-1 bg-success d-inline-block">.ms-3<br>.ps-3</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="mt-3 pt-3 b-1 bg-success d-inline-block">.mt-3<br>.pt-3</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="mx-3 px-3 b-1 bg-success d-inline-block">.mx-3<br>.px-3</div>
+					</div>
+					<div class="m-2 b-1 bg-warn d-inline-block">
+						<div class="my-3 py-3 b-1 bg-success d-inline-block">.my-3<br>.py-3</div>
+					</div>
+				</div>
+				<div class="b-1 bg-warn w-100">
+					<div class="mx-auto p-3 b-1 bg-success" style="width: 100px">.mx-auto<br>.p-3</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="uer-select">User Select</h3>
+				<div class="inline-code">.select-[all|auto|none|text]</div>
+				<br><br>
+				<div class="select-all inline-code b-1 p-2">.select-all</div>
+				<div class="select-auto inline-code b-1 p-2">.select-auto</div>
+				<div class="select-none inline-code b-1 p-2">.select-none</div>
+				<div class="select-text inline-code b-1 p-2">.select-text</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+				<h3 id="visibility">Visibility</h3>
+				<div class="inline-code">.[hidden|visible]-[xs|sm|md|lg|xl]</div>
+				<br><br>
+				<div class="d-inline-block b-1 p-1">
+					<div class="b-1 d-inline-block">
+						<div class="hidden inline-code b-1 p-2">.hidden</div>
+					</div>
+					<div class="visible inline-code b-1 p-2">.visible</div>
+				</div>
+			</div>
+
+			<div class="mt-4 flex-grow-1 bg-clear shadow p-3 mb-3">
+				<h3 id="z-index">Z-Index</h3>
+				<div class="inline-code">.z-[0-5]</div>
+				<br><br>
+				<div style="height: 75px">
+					<div class="pos-rel">
+						<div class="z-5 pos-abs b-1 br-3 inline-code flex-r justify-end align-items-end" style="width: 75px; height: 75px; "><div class="p-1">z-5</div></div>
+						<div class="z-4 pos-abs b-1 br-3 inline-code flex-r justify-end align-items-end" style="width: 75px; height: 75px; transform: translateX(40px)"><div class="p-1">z-4</div></div>
+						<div class="z-3 pos-abs b-1 br-3 inline-code flex-r justify-end align-items-end" style="width: 75px; height: 75px; transform: translateX(80px)"><div class="p-1">z-3</div></div>
+						<div class="z-2 pos-abs b-1 br-3 inline-code flex-r justify-end align-items-end" style="width: 75px; height: 75px; transform: translateX(120px)"><div class="p-1">z-2</div></div>
+						<div class="z-1 pos-abs b-1 br-3 inline-code flex-r justify-end align-items-end" style="width: 75px; height: 75px; transform: translateX(160px)"><div class="p-1">z-1</div></div>
+						<div class="z-0 pos-abs b-1 br-3 inline-code flex-r justify-end align-items-end" style="width: 75px; height: 75px; transform: translateX(200px)"><div class="p-1">z-0</div></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="w-100 p-2"></div>
+		</div>
+
+		<div id="toc" class="flex-r shadow bg-clear z-5 pos-fix animate b-1" style="right: 0; top: 50px; transform: translateX(calc(100% - 26px))">
+			<div id="toc-toggle" class="curs-hover b-0 be-1 px-1 py-3 bg-backdrop" style="writing-mode: vertical-rl">
+				Table of Contents
+			</div>
+			<div class="p-3 overflow-y-auto" style="max-height: 50vh;">
+				<ul class="p-0">
+					<li>
+						<a href="#top">@ztimson/utils</a>
+						<ul class="fs-no-dec">
+							<li>
+								<a href="#setup">Setup</a>
+								<ul>
+									<li><a href="#install">Install</a></li>
+									<li><a href="#theming">Theming</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#utilities">Utilities</a>
+								<ul>
+									<li><a href="#alignment">Alignment</a></li>
+									<li><a href="#animations">Animations</a></li>
+									<li><a href="#borders">Borders</a></li>
+									<li><a href="#colors">Colors</a></li>
+									<li><a href="#cursors">Cursors</a></li>
+									<li><a href="#display">Display</a></li>
+									<li><a href="#flex">Flex</a></li>
+									<li><a href="#float">Float</a></li>
+									<li><a href="#font">Font Style</a></li>
+									<li><a href="#hover">Hover</a></li>
+									<li><a href="#object-fit">Object Fit</a></li>
+									<li><a href="#overflow">Overflow</a></li>
+									<li><a href="#opacity">Opacity</a></li>
+									<li><a href="#position">Position</a></li>
+									<li><a href="#shadows">Shadows</a></li>
+									<li><a href="#size">Size</a></li>
+									<li><a href="#spacing">Spacing</a></li>
+									<li><a href="#uer-select">User Select</a></li>
+									<li><a href="#visibility">Visibility</a></li>
+									<li><a href="#z-index">Z-Index</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<script>
+			let open = false;
+			const toc = document.querySelector('#toc')
+			document.querySelector('#toc-toggle').onclick = () => {
+				if(open) toc.style.transform = 'translateX(calc(100% - 26px))';
+				else toc.style.transform = 'translateX(0)';
+				open = !open;
+			}
+		</script>
 	</body>
 </html>

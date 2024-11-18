@@ -4,7 +4,7 @@
 
 // Colors
 :root {
-	// Theme colors, what ever you like
+	// Theme colors -- what ever you like
 	--theme-backdrop: #dddddd;
 	--theme-primary: #ff0000;
 	--theme-accent: #0000ff;
@@ -15,7 +15,7 @@
 	--theme-black: black;
 	--theme-white: white;
 
-	// Mic
+	// Misc
 	--theme-animation: 0.2s linear; // Animation style
 	--theme-content-width: 1100px; // Max width of clamped content
 	--theme-font: Arial, sans-serif;
@@ -33,15 +33,15 @@
 		--theme-text: #ffffff; // Text color (Should contrast bg-primary)
 		--theme-muted: #cccccc; // Muted text color (Should have less contrast against bg-primary)
 	}
-
 }
+
+$breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px); // Device size
+$sizes: (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5rem); // Padding/Margin, etc...
 
 // Don't edit past this point ===============================================================================
 
-$breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px);
 $direction: ('s': 'left', 't': 'top', 'e': 'right', 'b': 'bottom');
-$divisible: (0, 10, 20, 25, 30, 33, 40, 50, 60, 66, 70, 75, 80, 90, 100);
-$sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5rem);
+$divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 
 // "Fixes" ==================================================================================================
 
@@ -56,20 +56,18 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 }
 
 .fix-button, .fix {
-	button {
+	button:not(:disabled) {
 		cursor: pointer;
 	}
 }
 
-.fix-code, .fix {
-	code {
-		display: block;
-		white-space: pre;
-		font-family: monospace;
-		background: rgb(30, 30, 30);
-		color: #00cb00;
-		overflow: auto;
-	}
+.fix-code code, code.fix {
+	display: block;
+	white-space: pre;
+	font-family: monospace;
+	background: rgb(30, 30, 30);
+	color: #00cb00;
+	overflow: auto;
 }
 
 .fix-dom, .fix {
@@ -83,7 +81,11 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 		background-color: var(--theme-backdrop);
 	}
 
-	hr { opacity: 50%; }
+	hr {
+		border-bottom: 1px solid black;
+		width: 100%;
+		opacity: 50%;
+	}
 	* { box-sizing: border-box; }
 }
 
@@ -112,7 +114,26 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 
 option { color: black !important; }
 
+// Misc =====================================================================================================
+
+// Center
+.center {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+// Clamp (Restrict page width for large screens)
+.clamp { width: min(var(--theme-content-width), calc(100% - map.get($sizes, 3))); }
+
+
 // Utilities ================================================================================================
+
+// Anchor
+.anchor-c { transform: translate(-50%, -50%); }
+.anchor-e { transform: translate(-100%, -50%); }
+.anchor-s { transform: translate(0, -50%); }
 
 // Animate
 .animate { transition: var(--theme-animation); }
@@ -121,14 +142,17 @@ option { color: black !important; }
 	transition: var(--theme-animation);
 	transition-property: color, background-color;
 }
+.animate-opacity {
+	transition: var(--theme-animation);
+	transition-property: opacity;
+}
 .animate-pos {
 	transition: var(--theme-animation);
 	transition-property: height, width, left, right, top, bottom;
 }
-
-// Border - Colors
-@each $color in ('black', 'white', 'primary', 'secondary', 'info', 'success', 'warn', 'danger', 'muted') {
-	.b-#{$color} { border-color: var(--theme-#{$color}) !important; }
+.animate-trans {
+	transition: var(--theme-animation);
+	transition-property: transform;
 }
 
 // Border - Radius
@@ -143,17 +167,17 @@ option { color: black !important; }
 
 // Colors - Background
 .bg-backdrop { background-color: var(--theme-backdrop) !important; }
-.bg-black { background-color: var(--theme-white) !important; }
+.bg-black { background-color: var(--theme-black) !important; }
+.bg-white { background-color: var(--theme-white) !important; }
+.bg-transparent { background-color: transparent !important; }
 .bg-clear {
 	background-color: var(--theme-clear) !important;
 	color: var(--theme-text) !important;
 }
-.bg-transparent { background-color: transparent !important; }
-.bg-white { background-color: var(--theme-white) !important; }
-@each $color in ('primary', 'secondary', 'text', 'info', 'success', 'warn', 'danger', 'muted') {
+@each $color in ('primary', 'accent', 'text', 'info', 'success', 'warn', 'danger', 'muted') {
 	.bg-#{$color} {
 		position: relative;
-		color: white;
+		z-index: 1;
 	}
 	.bg-#{$color}::before {
 		content: '';
@@ -163,41 +187,31 @@ option { color: black !important; }
 		right: 0;
 		bottom: 0;
 		background-color: var(--theme-#{$color});
-		opacity: 0.2;
+		filter: saturate(.5) brightness(150%);
 		border-radius: inherit;
+		z-index: -1;
 	}
 }
 
-// Center
-.center {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-}
-
-// Clamp (Restrict page width for large screens)
-.clamp { width: min(var(--theme-content-width), calc(100% - map.get($sizes, 3))); }
-
 // Colors - Foreground
-@each $color in ('black', 'white', 'text', 'primary', 'secondary', 'info', 'success', 'warn', 'danger', 'muted') {
+@each $color in ('black', 'clear', 'white', 'text', 'primary', 'accent', 'info', 'success', 'warn', 'danger', 'muted') {
 	.fg-#{$color} { color: var(--theme-#{$color}) !important; }
 }
 
 // Cursors
-@each $name in ('auto', 'default', 'none', 'context-menu', 'help', 'pointer', 'progress', 'wait', 'cell', 'crosshair', 'text', 'vertical-text', 'alias', 'copy', 'move', 'no-drop', 'not-allowed', 'grab', 'grabbing', 'all-scroll', 'col-resize', 'row-resize', 'zoom-in', 'zoom-out') {
+@each $name in ('alias','auto','cell','col-resize','copy','crosshair','default','grab','grabbing','help','move','not-allowed','pointer','progress','row-resize','text','none','wait','vertical-text','zoom-in','zoom-out') {
 	.curs-#{$name} { cursor: #{$name} !important; }
 }
 
 // Font
 .fs-bolder { font-weight: bolder !important; }
-.fs-bold { font-weight: bold !important; }
-.fs-clear { font-style: normal !important; }
+.fs-bold { font-weight: 500 !important; }
+.fs-normal { font-weight: normal !important; }
 .fs-italic { font-style: italic !important; }
+.fs-none { font-style: normal !important; }
 .fs-lighter { font-weight: lighter !important; }
 .fs-line-through { text-decoration: line-through !important; }
-.fs-none { text-decoration: none !important; }
-.fs-normal { font-weight: normal !important; }
+.fs-no-dec { text-decoration: none !important; }
 .fs-underline { text-decoration: underline !important; }
 .fs-7 { font-size: 2.5rem !important; }
 .fs-6 { font-size: 2.25rem !important; }
@@ -206,6 +220,26 @@ option { color: black !important; }
 .fs-3 { font-size: 1.5rem !important; }
 .fs-2 { font-size: 1.25rem !important; }
 .fs-1 { font-size: 1rem !important; }
+.fs-break {
+	word-wrap: break-word !important;
+	word-break: break-word !important;
+}
+.fs-truncate {
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+}
+.fs-nowrap {
+	white-space: nowrap !important;
+	text-wrap: nowrap !important;
+}
+.fs-wrap {
+	white-space: normal !important;
+	text-wrap: pretty !important;
+}
+.fs-lowercase { text-transform: lowercase !important; }
+.fs-uppercase { text-transform: uppercase !important; }
+.fs-capitalize { text-transform: capitalize !important; }
 
 // Height
 .h-auto { height: auto !important; }
@@ -214,44 +248,46 @@ option { color: black !important; }
 }
 
 // Hover
-.hover:hover { filter: brightness(125%) !important; }
+.curs-hover:hover, .hover:hover { filter: brightness(125%) !important; }
+.curs-hover:hover {
+	cursor: pointer;
+	user-select: none;
+}
 
 // Opacity
 @each $div in $divisible {
 	.o-#{$div} { opacity: #{$div}#{'%'} !important; }
 }
 
-// Z-index
+// Overflow
+@each $opt in ('auto', 'hidden', 'scroll', 'visible') {
+	.overflow-#{$opt} { overflow: #{$opt} !important; }
+	.overflow-x-#{$opt} { overflow-x: #{$opt} !important; }
+	.overflow-y-#{$opt} { overflow-y: #{$opt} !important; }
+}
+
+// Position
+@each $p, $pos in ('abs': 'absolute', 'fix': 'fixed', 'rel': 'relative', 'static': 'static', 'stick': 'sticky') {
+	.pos-#{$p} { position: #{$pos} !important; }
+}
+
 @each $div in $divisible {
-	.z-#{$div} { z-index: #{$div} !important; }
+	.bottom-#{$div} { bottom: #{$div}#{'%'} !important; }
+	.end-#{$div} { right: #{$div}#{'%'} !important; }
+	.start-#{$div} { left: #{$div}#{'%'} !important; }
+	.top-#{$div} { top: #{$div}#{'%'} !important; }
 }
 
 // Shadows
 .shadow { box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 !important; }
+.shadow-drop { filter: drop-shadow(0px 1px 2.5px black) !important; }
+.shadow-white { filter: drop-shadow(0px 1px 2.5px white) !important; }
 .shadow-none { box-shadow: none !important; }
 
-// Text
-.text-break {
-	word-wrap: break-word !important;
-	word-break: break-word !important;
+// User Select
+@each $s in ('all', 'auto', 'none', 'text') {
+	.select-#{$s} { user-select: #{$s} !important; }
 }
-.text-truncate {
-	overflow: hidden !important;
-	text-overflow: ellipsis !important;
-	white-space: nowrap !important;
-}
-.text-nowrap {
-	white-space: nowrap !important;
-	text-wrap: nowrap !important;
-}
-.text-wrap {
-	white-space: normal !important;
-	text-wrap: pretty !important;
-}
-
-.text-lowercase { text-transform: lowercase !important; }
-.text-uppercase { text-transform: uppercase !important; }
-.text-capitalize { text-transform: capitalize !important; }
 
 // Width
 .w-auto { width: auto !important; }
@@ -259,14 +295,10 @@ option { color: black !important; }
 	.w-#{$div} { width: #{$div}#{'%'} !important; }
 }
 
-// User Select
-@each $s in ('all', 'auto', 'none', 'text') {
-	.select-#{$s} { user-select: #{$s} !important; }
+// Z-index
+@each $s, $ignore in $sizes {
+	.z-#{$s} { z-index: #{$s} !important; }
 }
-
-// Visibility
-.visible {  visibility: visible !important; }
-.hidden {  visibility: hidden !important; }
 
 // Breakpoint rules
 @mixin utilities($bp) {
@@ -280,26 +312,17 @@ option { color: black !important; }
 	.align-y#{$bp}-start { vertical-align: top !important; }
 	.align-y#{$bp}-end { vertical-align: bottom !important; }
 
-	// Border - Style
-	.b#{$bp}-dash { border-style: dashed !important; }
-	.b#{$bp}-dot-dash { border-style: dot-dash !important; }
-	.b#{$bp}-dot-dot-dash { border-style: dot-dot-dash !important; }
-	.b#{$bp}-dot { border-style: dotted !important; }
-	.b#{$bp}-double { border-style: double !important; }
-	.b#{$bp}-none { border-style: none !important; }
-	.b#{$bp}-solid { border-style: solid !important; }
-
 	// Display
-	@each $display in (block, inline, inline-block, grid, inline-grid, table, table-row, table-cell, none) {
+	@each $display in (block, inline, inline-block, 'flex', 'inline-flex' grid, inline-grid, table, table-row, table-cell, none) {
 		.d#{$bp}-#{$display} { display: #{$display} !important; }
 	}
 
 	// Flex
-	.align#{$bp}-start { align-content: start !important; }
-	.align#{$bp}-end { align-content: end !important; }
-	.align#{$bp}-center { align-content: center !important; }
-	.align#{$bp}-baseline { align-content: baseline !important; }
-	.align#{$bp}-stretch { align-content: stretch !important; }
+	.align-content#{$bp}-start { align-content: start !important; }
+	.align-content#{$bp}-end { align-content: end !important; }
+	.align-content#{$bp}-center { align-content: center !important; }
+	.align-content#{$bp}-baseline { align-content: baseline !important; }
+	.align-content#{$bp}-stretch { align-content: stretch !important; }
 	.align-items#{$bp}-start { align-items: start !important; }
 	.align-items#{$bp}-end { align-items: end !important; }
 	.align-items#{$bp}-center { align-items: center !important; }
@@ -343,14 +366,18 @@ option { color: black !important; }
 		flex-direction: row-reverse !important;
 	}
 	.flex#{$bp}-fill { flex: 1 1 auto; }
-	.flex#{$bp}-expand {
+	.flex#{$bp}-fill-even {
 		flex-basis: 0 !important;
 		flex-grow: 1 !important;
 	}
-	.flex#{$bp}-grow-1 { flex-grow: 1 !important; }
-	.flex#{$bp}-shrink-1 { flex-shrink: 1 !important; }
 	.flex#{$bp}-grow-0 { flex-grow: 0 !important; }
 	.flex#{$bp}-shrink-0 { flex-shrink: 0 !important; }
+	.flex#{$bp}-grow-1 { flex-grow: 1 !important; }
+	.flex#{$bp}-shrink-1 { flex-shrink: 1 !important; }
+	.flex#{$bp}-grow-2 { flex-grow: 2 !important; }
+	.flex#{$bp}-shrink-2 { flex-shrink: 2 !important; }
+	.flex#{$bp}-grow-3 { flex-grow: 3 !important; }
+	.flex#{$bp}-shrink-3 { flex-shrink: 3 !important; }
 	.flex#{$bp}-nowrap { flex-wrap: nowrap !important; }
 	.flex#{$bp}-wrap { flex-wrap: wrap !important; }
 	.justify#{$bp}-start { justify-content: start !important; }
@@ -372,26 +399,24 @@ option { color: black !important; }
 	.fit#{$bp}-scale { object-fit: scale-down !important; }
 	.fit#{$bp}-none { object-fit: none !important; }
 
-	// Overflow
-	@each $opt in ('auto', 'hidden', 'scroll', 'visible') {
-		.overflow#{$bp}-#{$opt} { overflow: #{$opt} !important; }
-		.overflow-x#{$bp}-#{$opt} { overflow-x: #{$opt} !important; }
-		.overflow-y#{$bp}-#{$opt} { overflow-y: #{$opt} !important; }
+	.m#{$bp}-auto { margin: auto !important; } // Margin
+	.mx#{$bp}-auto { // Margin
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+	.my#{$bp}-auto { // Margin
+		margin-top: auto !important;
+		margin-bottom: auto !important;
 	}
 
-	// Position
-	@each $pos in ('absolute', 'fixed', 'relative', 'static', 'sticky') {
-		.pos#{$bp}-#{$pos} { position: #{$pos} !important; }
-	}
+	// Visibility
+	.visible#{$bp} {  visibility: visible !important; }
+	.hidden#{$bp} {  visibility: hidden !important; }
 
 	@each $s, $size in $sizes {
-		.b#{$bp}-#{$s} { border: #{$s}px solid !important; } // Border
+		.b#{$bp}-#{$s} { border: #{$s}px solid var(--theme-muted) !important; } // Border
 		.m#{$bp}-#{$s} { margin: $size !important; } // Margin
 		.p#{$bp}-#{$s} { padding: $size !important; } // Padding
-		.bx#{$bp}-#{$s} { // Border
-			border-left: #{$s}px solid !important;
-			border-right: #{$s}px solid !important;
-		}
 		.mx#{$bp}-#{$s} { // Margin
 			margin-left: $size !important;
 			margin-right: $size !important;
@@ -399,10 +424,6 @@ option { color: black !important; }
 		.px#{$bp}-#{$s} { // Padding
 			padding-left: $size !important;
 			padding-right: $size !important;
-		}
-		.by#{$bp}-#{$s} { // Border
-			border-top: #{$s}px solid !important;
-			border-bottom: #{$s}px solid !important;
 		}
 		.my#{$bp}-#{$s} { // Margin
 			margin-top: $size !important;
@@ -414,9 +435,13 @@ option { color: black !important; }
 		}
 
 		.order#{$bp}-#{$s} { order: $s !important; } // Flex order
+	}
 
-		@each $d, $dir in $direction {
-			.b#{$d}#{$bp}-#{$s} { border-#{$dir}: #{$s}px solid !important; } // Border
+	@each $d, $dir in $direction {
+		.m#{$d}#{$bp}-auto { margin-#{$dir}: auto !important; } // Margin
+
+		@each $s, $size in $sizes {
+			.b#{$d}#{$bp}-#{$s} { border-#{$dir}: #{$s}px solid var(--theme-muted) !important; } // Border
 			.m#{$d}#{$bp}-#{$s} { margin-#{$dir}: $size !important; } // Margin
 			.p#{$d}#{$bp}-#{$s} { padding-#{$dir}: $size !important; } // Padding
 		}
@@ -424,11 +449,23 @@ option { color: black !important; }
 }
 
 @include utilities(null);
-@media print {
-	@include utilities('print');
-}
+@media print { @include utilities('print'); }
 @each $breakpoint, $min-width in $breakpoints {
 	@media (min-width: #{$min-width}) {
 		@include utilities($breakpoint);
 	}
 }
+
+// Border - Colors
+@each $color in ('black', 'white', 'primary', 'accent', 'info', 'success', 'text', 'warn', 'danger', 'muted') {
+	.b-#{$color} { border-color: var(--theme-#{$color}) !important; }
+}
+
+// Border - Style
+.b-dash { border-style: dashed !important; }
+.b-dot-dash { border-style: dot-dash !important; }
+.b-dot-dot-dash { border-style: dot-dot-dash !important; }
+.b-dot { border-style: dotted !important; }
+.b-double { border-style: double !important; }
+.b-none { border-style: none !important; }
+.b-solid { border-style: solid !important; }

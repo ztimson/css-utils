@@ -42,3 +42,12 @@ jobs:
                 uses: ztimson/actions/tag@develop
                 with:
                     tag: ${{env.VERSION}}
+
+    docs:
+        name: Publish CDN & Docs
+        needs: build
+        uses: ztimson/actions/.github/workflows/docker.yaml@develop
+        with:
+            name: ztimson/css-utils
+            repository: ${{github.server_url}}/${{github.repository}}.git
+            pass: ${{secrets.DEPLOY_TOKEN}}
