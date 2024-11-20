@@ -187,7 +187,7 @@ option { color: black !important; }
 		right: 0;
 		bottom: 0;
 		background-color: var(--theme-#{$color});
-		filter: saturate(.5) brightness(250%);
+		filter: saturate(.5) brightness(150%);
 		border-radius: inherit;
 		z-index: -1;
 	}
