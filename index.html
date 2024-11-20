@@ -13,6 +13,22 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 		<link href="./dist/css-utils.css" rel="stylesheet">
 		<style>
+			::-webkit-scrollbar {
+				width: 6px;
+				height: 6px;
+			}
+			::-webkit-scrollbar-thumb {
+				width: 6px;
+				height: 6px;
+				margin: 0 1px;
+				border-radius: 3px;
+				background: #777;
+				cursor: pointer;
+			}
+			::-webkit-scrollbar-corner {
+				background: rgba(0,0,0,0);
+			}
+
 			* {
 				font-family: Roboto, sans-serif !important;
 				scroll-behavior: smooth;
@@ -34,10 +50,13 @@
 			}
 
 			.animate-example.animated {
-				left: 110px;
 				background: var(--theme-accent);
 				transform: rotate(180deg);
 				opacity: 25%;
+			}
+			.animate-example.animated.animate,
+			.animate-example.animated.animate-pos {
+				left: 110px;
 			}
 
 			.box {
@@ -50,6 +69,7 @@
 				display: inline-block;
 				padding: 5px;
 				background: #f3f3f3;
+				word-break: break-word;
 			}
 		</style>
 
@@ -58,7 +78,7 @@
 		<script>hljs.highlightAll();</script>
 	</head>
 
-	<body class="theme-light p-3 flex-r justify-center">
+	<body class="theme-light p-4 flex-r justify-center">
 		<div class="clamp flex-c z-1">
 			<div id="top" class="flex-grow-1 bg-clear shadow p-3">
 				<h1 class="mb-0">@ztimson/css-utils</h1>
@@ -672,29 +692,31 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
-				<h3 id="overflow">Overflow</h3>
-				<div class="inline-code">.overflow-[x|y]-[auto|hidden|scroll|visible]</div>
-				<br><br>
-				<div class="flex-r">
-					<div class="b-1 m-2 overflow-auto" style="width: 150px; height: 150px;">
-						<div style="width: 300px; height: 300px;" class="pos-rel">
-							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-auto</span>
+			<div class="mt-4 flex-grow-1 bg-clear shadow">
+				<div class="overflow-hidden p-3">
+					<h3 id="overflow">Overflow</h3>
+					<div class="inline-code">.overflow-[x|y]-[auto|hidden|scroll|visible]</div>
+					<br><br>
+					<div class="flex-r">
+						<div class="b-1 m-2 overflow-auto" style="width: 150px; height: 150px;">
+							<div style="width: 300px; height: 300px;" class="pos-rel">
+								<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-auto</span>
+							</div>
 						</div>
-					</div>
-					<div class="b-1 m-2 overflow-hidden" style="width: 150px; height: 150px;">
-						<div style="width: 300px; height: 300px;" class="pos-rel">
-							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-hidden</span>
+						<div class="b-1 m-2 overflow-hidden" style="width: 150px; height: 150px;">
+							<div style="width: 300px; height: 300px;" class="pos-rel">
+								<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-hidden</span>
+							</div>
 						</div>
-					</div>
-					<div class="b-1 m-2 overflow-scroll" style="width: 150px; height: 150px;">
-						<div style="width: 300px; height: 300px;" class="pos-rel">
-							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-scroll</span>
+						<div class="b-1 m-2 overflow-scroll" style="width: 150px; height: 150px;">
+							<div style="width: 300px; height: 300px;" class="pos-rel">
+								<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-scroll</span>
+							</div>
 						</div>
-					</div>
-					<div class="b-1 m-2 overflow-visible" style="width: 150px; height: 150px;">
-						<div style="width: 300px; height: 300px;" class="pos-rel">
-							<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-visible</span>
+						<div class="b-1 m-2 overflow-visible" style="width: 150px; height: 150px;">
+							<div style="width: 300px; height: 300px;" class="pos-rel">
+								<span class="pos-abs" style="left: 50%; top: 25%; transform: translate(-50%, -50%)">.overflow-visible</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -938,10 +960,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 			<div class="w-100 p-2"></div>
 		</div>
 
-		<div id="toc" class="flex-r shadow bg-clear z-5 pos-fix animate b-1" style="right: 0; top: 50px; transform: translateX(calc(100% - 26px))">
-			<div id="toc-toggle" class="curs-hover b-0 be-1 px-1 py-3 bg-backdrop" style="writing-mode: vertical-rl">
-				Table of Contents
-			</div>
+		<div id="toc" class="flex-r shadow bg-clear z-5 pos-fix animate b-1" style="left: 0; top: 25px; transform: translateX(calc(-100% + 26px))">
 			<div class="p-3 overflow-y-auto" style="max-height: 50vh;">
 				<ul class="p-0">
 					<li>
@@ -983,13 +1002,16 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 					</li>
 				</ul>
 			</div>
+			<div id="toc-toggle" class="curs-hover b-0 be-1 px-1 py-3 bg-primary fg-white" style="writing-mode: vertical-rl">
+				Table of Contents
+			</div>
 		</div>
 
 		<script>
 			let open = false;
 			const toc = document.querySelector('#toc')
 			document.querySelector('#toc-toggle').onclick = () => {
-				if(open) toc.style.transform = 'translateX(calc(100% - 26px))';
+				if(open) toc.style.transform = 'translateX(calc(-100% + 26px))';
 				else toc.style.transform = 'translateX(0)';
 				open = !open;
 			}
