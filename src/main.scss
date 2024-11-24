@@ -47,7 +47,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 
 // Optional opinionated styling to clean up CSS defaults
 
-.fix-anchor, .fix {
+.fix-anchor, .fix:not(.no-anchor-fix) {
 	a, a:not([href]) {
 		color: var(--theme-primary);
 		&:not(:hover) { text-decoration: none; }
@@ -55,13 +55,13 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	}
 }
 
-.fix-button, .fix {
+.fix-button, .fix:not(.no-button-fix) {
 	button:not(:disabled) {
 		cursor: pointer;
 	}
 }
 
-.fix-dom, .fix {
+.fix-dom, .fix:not(.no-dom-fix) {
 	&, html, body {
 		height: 100%;
 		width: 100%;
@@ -72,22 +72,16 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 		background-color: var(--theme-backdrop);
 	}
 
-	hr {
-		border-bottom: 1px solid black;
-		width: 100%;
-		opacity: 50%;
-	}
-
 	* { box-sizing: border-box; }
 }
 
-.fix-focus, .fix {
+.fix-focus, .fix:not(.no-focus-fix) {
 	* {
 		outline: inherit;
 	}
 }
 
-.fix-font, .fix {
+.fix-font, .fix:not(.no-font-fix) {
 	color: var(--theme-text);
 	font-family: var(--theme-font), sans-serif;
 
