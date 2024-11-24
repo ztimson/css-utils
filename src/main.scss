@@ -61,15 +61,6 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	}
 }
 
-.fix-code code, code.fix {
-	display: block;
-	white-space: pre;
-	font-family: monospace;
-	background: rgb(30, 30, 30);
-	color: #00cb00;
-	overflow: auto;
-}
-
 .fix-dom, .fix {
 	&, html, body {
 		height: 100%;
@@ -86,24 +77,27 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 		width: 100%;
 		opacity: 50%;
 	}
+
 	* { box-sizing: border-box; }
 }
 
 .fix-focus, .fix {
 	* {
-		outline: none !important;
-		box-shadow: none !important;
+		outline: inherit;
 	}
 }
 
 .fix-font, .fix {
-	* { font-family: var(--theme-font), sans-serif; }
-	p, input, select, textarea, button { font-size: 1rem; }
-	span { font-size: inherit; }
-	h1, h2, h3, h4, h5, h6, p {
-		margin-top: 0;
-		margin-bottom: 0.5rem;
+	color: var(--theme-text);
+	font-family: var(--theme-font), sans-serif;
+
+	* {
+		font-family: inherit;
+		font-size: inherit;
 	}
+
+	p, input, select, textarea, button { font-size: 1rem; }
+	h1, h2, h3, h4, h5, h6, p { margin: 0 0 0.5rem 0; }
 	h1 { font-weight: 500; font-size: 2.5rem; }
 	h2 { font-weight: 500; font-size: 2rem; }
 	h3 { font-weight: 500; font-size: 1.75rem; }
@@ -111,8 +105,6 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	h5 { font-weight: 500; font-size: 1.25rem; }
 	h6 { font-weight: 500; font-size: 1rem; }
 }
-
-option { color: black !important; }
 
 // Misc =====================================================================================================
 
