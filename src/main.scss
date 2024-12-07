@@ -50,8 +50,8 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 .fix-anchor, .fix:not(.no-anchor-fix) {
 	a, a:not([href]) {
 		color: var(--theme-primary);
-		&:not(:hover) { text-decoration: none; }
-		&:hover { text-decoration: underline; }
+		&:not(:hover):not(:focus) { text-decoration: none; }
+		&:hover, &:focus { text-decoration: underline; }
 		cursor: pointer;
 	}
 }
