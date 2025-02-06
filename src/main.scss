@@ -178,7 +178,10 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 
 // Colors - Foreground
 @each $color in ('black', 'clear', 'white', 'text', 'primary', 'accent', 'info', 'success', 'warn', 'danger', 'muted') {
-	.fg-#{$color} { color: var(--theme-#{$color}) !important; }
+	.fg-#{$color} {
+		color: var(--theme-#{$color}) !important;
+		text-decoration-color: var(--theme-#{$color}) !important;
+	}
 }
 
 // Cursors
