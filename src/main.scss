@@ -16,6 +16,7 @@
 	--theme-white: white;
 
 	// Misc
+	--theme-border: black;
 	--theme-animation: 0.2s linear; // Animation style
 	--theme-content-width: 1100px; // Max width of clamped content
 	--theme-font: Arial, sans-serif;
@@ -110,7 +111,6 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 // Clamp (Restrict page width for large screens)
 .clamp { width: min(var(--theme-content-width), calc(100% - map.get($sizes, 3))); }
 
-
 // Utilities ================================================================================================
 
 // Anchor
@@ -153,7 +153,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 .bg-black { background-color: var(--theme-black) !important; }
 .bg-white { background-color: var(--theme-white) !important; }
 .bg-transparent { background-color: transparent !important; }
-.bg-clear {
+.bg-container {
 	background-color: var(--theme-clear) !important;
 	color: var(--theme-text) !important;
 }
@@ -400,7 +400,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	.hidden#{$bp} {  visibility: hidden !important; }
 
 	@each $s, $size in $sizes {
-		.b#{$bp}-#{$s} { border: #{$s}px solid var(--theme-muted) !important; } // Border
+		.b#{$bp}-#{$s} { border: #{$s}px solid var(--theme-border) !important; } // Border
 		.m#{$bp}-#{$s} { margin: $size !important; } // Margin
 		.p#{$bp}-#{$s} { padding: $size !important; } // Padding
 		.mx#{$bp}-#{$s} { // Margin
