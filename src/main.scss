@@ -427,7 +427,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 		.m#{$d}#{$bp}-auto { margin-#{$dir}: auto !important; } // Margin
 
 		@each $s, $size in $sizes {
-			.b#{$d}#{$bp}-#{$s} { border-#{$dir}: #{$s}px solid var(--theme-muted) !important; } // Border
+			.b#{$d}#{$bp}-#{$s} { border-#{$dir}: #{$s}px solid var(--theme-border) !important; } // Border
 			.m#{$d}#{$bp}-#{$s} { margin-#{$dir}: $size !important; } // Margin
 			.p#{$d}#{$bp}-#{$s} { padding-#{$dir}: $size !important; } // Padding
 		}
