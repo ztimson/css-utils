@@ -199,6 +199,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 .fs-no-dec { text-decoration: none !important; }
 .fs-strike { text-decoration: line-through !important; }
 .fs-underline { text-decoration: underline !important; }
+.fs-strike.fs-underline { text-decoration: line-through underline !important; }
 .fs-7 { font-size: 2.5rem !important; }
 .fs-6 { font-size: 2.25rem !important; }
 .fs-5 { font-size: 2rem !important; }

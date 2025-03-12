@@ -80,7 +80,7 @@
 
 	<body class="theme-light p-4 flex-r justify-center">
 		<div class="clamp flex-c z-1">
-			<div id="top" class="flex-grow-1 bg-clear shadow p-3">
+			<div id="top" class="flex-grow-1 bg-container shadow p-3">
 				<h1 class="mb-0">@ztimson/css-utils</h1>
 				<hr class="mb-3">
 				<p>CSS Utils is a css library based on bootstrap. At 1/3 the size, its all the utilities without the bloat.</p>
@@ -88,7 +88,7 @@
 			</div>
 
 			<h2 id="setup" class="mt-4 mb-3">Setup</h2>
-			<div class="flex-grow-1 bg-clear shadow p-3">
+			<div class="flex-grow-1 bg-container shadow p-3">
 				<h3 id="install">Install</h3>
 				<h4>NPM</h4>
 				<pre><code class="language-scss">
@@ -109,7 +109,7 @@ npm install @ztimson/css-utils
 &lt;link rel="stylesheet" href="https://css.zakscode.com/src/main.scss" &gt;&lt;/link&gt;
 				</code></pre>
 			</div>
-			<div class="flex-grow-1 bg-clear shadow p-3 mt-4">
+			<div class="flex-grow-1 bg-container shadow p-3 mt-4">
 				<h3 id="theming">Theming</h3>
 				<p>Theming is minimal since its so opinionated. Its all done through CSS variables allowing runtime manipulation without having to recompile.</p>
 				<pre><code class="language-scss">
@@ -157,7 +157,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 			</div>
 
 			<h2 id="utilities" class="mt-4 mb-3">Utilities</h2>
-			<div class="flex-grow-1 bg-clear shadow p-3">
+			<div class="flex-grow-1 bg-container shadow p-3">
 				<h3 id="alignment">Alignment</h3>
 				<div class="inline-code">.align-[x|y]-[xs|sm|md|lg|xl]-[start|end]</div>
 				<br><br>
@@ -190,7 +190,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="animations">Animations</h3>
 				<div class="inline-code">.animate-[color|none|opacity|pos|trans]</div>
 				<br><br>
@@ -254,7 +254,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</script>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="borders">Borders</h3>
 				<h4 class="fs-3">Color</h4>
 				<div class="inline-code">.b-[accent|black|danger|info|muted|primary|success|text|warn|white]</div>
@@ -316,7 +316,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="colors">Colors</h3>
 				<h4 class="fs-3">Background</h4>
 				<div class="inline-code">.bg-[accent|backdrop|black|clear|danger|info|muted|primary|success|transparent|text|warn|white]</div>
@@ -325,7 +325,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 					<div class="b-1 bg-accent m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-accent</div>
 					<div class="b-1 bg-backdrop m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-backdrop</div>
 					<div class="b-1 bg-black fg-white m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-black</div>
-					<div class="b-1 bg-clear m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-clear</div>
+					<div class="b-1 bg-container m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-container</div>
 					<div class="b-1 bg-danger m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-danger</div>
 					<div class="b-1 bg-info m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-info</div>
 					<div class="b-1 bg-muted m-2 p-2 inline-code flex-r align-items-center justify-center">.bg-muted</div>
@@ -371,7 +371,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="cursors">Cursors</h3>
 				<div class="inline-code">.curs-[alias|auto|cell|col-resize|copy|crosshair|default|grab|grabbing|help|hover|move|not-allowed|pointer|progress|row-resize|text|none|wait|vertical-text|zoom-in|zoom-out]</div>
 				<br><br>
@@ -401,12 +401,12 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="display">Display</h3>
 				<div class="inline-code">.d-[xs|sm|md|lg|xl]-[block|flex|grid|inline|inline-block|inline-flex|inline-grid|none|table|table-cell|table-row]</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="flex">Flex</h3>
 				<h4>Direction</h4>
 				<div class="inline-code">.flex-[xs|sm|md|lg|xl]-[c|r|rc|rr]</div>
@@ -575,7 +575,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="float">Float</h3>
 				<div class="inline-code">.float-[xs|sm|md|lg|xl]-[end|none|start]</div>
 				<br><br>
@@ -586,7 +586,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="font">Font Style</h3>
 				<h4>Decoration</h4>
 				<div class="inline-code">.fs-[italic|none|strike|underline]</div>
@@ -654,7 +654,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="hover">Hover</h3>
 				<div class="inline-code">.curs-hover|.hover</div>
 				<br><br>
@@ -664,7 +664,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="object-fit">Object Fit</h3>
 				<div class="inline-code">.fit-[contain|cover|fill|scale|none]</div>
 				<br><br>
@@ -692,7 +692,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow">
+			<div class="mt-4 flex-grow-1 bg-container shadow">
 				<div class="overflow-hidden p-3">
 					<h3 id="overflow">Overflow</h3>
 					<div class="inline-code">.overflow-[x|y]-[auto|hidden|scroll|visible]</div>
@@ -722,7 +722,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="opacity">Opacity</h3>
 				<div class="inline-code">.opacity-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100]</div>
 				<br><br>
@@ -741,7 +741,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="position">Position</h3>
 				<div class="inline-code">.pos-[abs|rel|static|stick]</div>
 				<br><br>
@@ -769,7 +769,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="shadows">Shadows</h3>
 				<div class="inline-code">.shadow-[drop|none|white]</div>
 				<br><br>
@@ -786,7 +786,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="size">Size</h3>
 				<div class="flex-c flex-md-r">
 					<div class="flex-fill-even">
@@ -868,7 +868,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="spacing">Spacing</h3>
 				<div>Margin: <span class="inline-code">.m[b|e|s|t|x|y]-[xs|sm|md|lg|xl]-[0-5|auto]</span></div>
 				<br>
@@ -919,7 +919,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="uer-select">User Select</h3>
 				<div class="inline-code">.select-[all|auto|none|text]</div>
 				<br><br>
@@ -929,7 +929,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				<div class="select-text inline-code b-1 p-2">.select-text</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3">
 				<h3 id="visibility">Visibility</h3>
 				<div class="inline-code">.[hidden|visible]-[xs|sm|md|lg|xl]</div>
 				<br><br>
@@ -941,7 +941,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 				</div>
 			</div>
 
-			<div class="mt-4 flex-grow-1 bg-clear shadow p-3 mb-3">
+			<div class="mt-4 flex-grow-1 bg-container shadow p-3 mb-3">
 				<h3 id="z-index">Z-Index</h3>
 				<div class="inline-code">.z-[0-5]</div>
 				<br><br>
@@ -960,7 +960,7 @@ $sizes: ('auto': auto, 0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5re
 			<div class="w-100 p-2"></div>
 		</div>
 
-		<div id="toc" class="flex-r shadow bg-clear z-5 pos-fix animate b-1" style="left: 0; top: 25px; transform: translateX(calc(-100% + 26px))">
+		<div id="toc" class="flex-r shadow bg-container z-5 pos-fix animate b-1" style="left: 0; top: 25px; transform: translateX(calc(-100% + 26px))">
 			<div class="p-3 overflow-y-auto" style="max-height: 50vh;">
 				<ul class="p-0">
 					<li>
