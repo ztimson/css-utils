@@ -57,9 +57,23 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	}
 }
 
+.no-fix, .no-anchor-fix {
+	a, a:not([href]) {
+		cursor: auto;
+		color: inherit;
+		text-decoration: inherit;
+	}
+}
+
 .fix-button, .fix:not(.no-button-fix) {
 	button:not(:disabled) {
 		cursor: pointer;
+	}
+}
+
+.no-fix, .no-button-fix {
+	button:not(:disabled) {
+		cursor: auto;
 	}
 }
 
@@ -77,10 +91,30 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	* { box-sizing: border-box; }
 }
 
+.no-fix, .no-dom-fix {
+	&, html, body {
+		height: auto;
+		width: auto;
+		margin: revert;
+		padding: revert;
+		overflow: visible;
+		color: revert;
+		background-color: transparent;
+	}
+	* { box-sizing: content-box; }
+}
+
 .fix-focus, .fix:not(.no-focus-fix) {
 	* {
 		outline: inherit;
 		-webkit-tap-highlight-color: transparent;
+	}
+}
+
+.no-fix, .no-focus-fix {
+	* {
+		outline: revert;
+		-webkit-tap-highlight-color: auto;
 	}
 }
 
@@ -96,6 +130,18 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	h4 { font-weight: 500; font-size: 1.5rem; }
 	h5 { font-weight: 500; font-size: 1.25rem; }
 	h6 { font-weight: 500; font-size: 1rem; }
+}
+
+.no-fix, .no-font-fix {
+	color: revert;
+	font-family: revert;
+	p, input, select, textarea, button { font-size: revert; }
+	h1, h2, h3, h4, h5, h6, p { margin: revert; }
+	h1, h2, h3, h4, h5, h6 { font-weight: revert; font-size: revert; }
+}
+
+.reset {
+	all: revert !important;
 }
 
 // Misc =====================================================================================================
@@ -288,7 +334,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	.align-y#{$bp}-end { vertical-align: bottom !important; }
 
 	// Display
-	@each $display in (block, inline, inline-block, 'flex', 'inline-flex' grid, inline-grid, table, table-row, table-cell, none) {
+	@each $display in (block, inline, inline-block, flex, inline-flex, grid, inline-grid, table, table-row, table-cell, none) {
 		.d#{$bp}-#{$display} { display: #{$display} !important; }
 	}
 
