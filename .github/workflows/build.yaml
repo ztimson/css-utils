@@ -43,11 +43,40 @@ jobs:
                 with:
                     tag: ${{env.VERSION}}
 
-    docs:
-        name: Publish CDN & Docs
-        needs: build
-        uses: ztimson/actions/.github/workflows/docker.yaml@develop
-        with:
-            name: ztimson/css-utils
-            repository: ${{github.server_url}}/${{github.repository}}.git
-            pass: ${{secrets.DEPLOY_TOKEN}}
+    container:
+        name: Build Container
+        runs-on: ubuntu-latest
+        container: docker
+        steps:
+            -   name: Build Container
+                run: |
+                    git clone -b "${{github.ref_name}}" "$(echo ${{github.server_url}}/${{github.repository}}.git | sed s%://%://${{github.token}}@% )" .
+                    DOCKER_HUB=$([ -n "${{secrets.DOCKER_HUB_USER}}" ] && [ -n "${{secrets.DOCKER_HUB_TOKEN}}" ] && [ -n "${{secrets.DOCKER_HUB_IMAGE}}" ] && echo "true" || echo "false")
+                    REGISTRY="$(echo "${{github.server_url}}" | sed -E 's|https?://||')"
+                    VERSION=$(cat package.json | grep version | grep -Eo '[0-9][[:alnum:]\.\/\-]+')
+
+                    docker login -u "${{github.repository_owner}}" -p "${{secrets.DEPLOY_TOKEN}}" "$REGISTRY"
+                    if [ "$DOCKER_HUB" = "true" ]; then docker login -u "${{secrets.DOCKER_HUB_USER}}" -p "${{secrets.DOCKER_HUB_TOKEN}}" docker.io; fi
+
+                    docker build -t "$REGISTRY/${{github.repository}}:${{github.ref_name}}" .
+                    docker push "$REGISTRY/${{github.repository}}:${{github.ref_name}}"
+                    if [ "$DOCKER_HUB" = "true" ]; then
+                      docker tag "$REGISTRY/${{github.repository}}:${{github.ref_name}}" "docker.io/${{secrets.DOCKER_HUB_IMAGE}}:${{github.ref_name}}"
+                      docker push "docker.io/${{secrets.DOCKER_HUB_IMAGE}}:${{github.ref_name}}"
+                    fi
+
+                    if [ "${{github.ref_name}}" = "master" ]; then
+                      docker tag "$REGISTRY/${{github.repository}}:${{github.ref_name}}" "$REGISTRY/${{github.repository}}:$VERSION"
+                      docker push "$REGISTRY/${{github.repository}}:$VERSION"
+                      if [ "$DOCKER_HUB" = "true" ]; then
+                        docker tag "$REGISTRY/${{github.repository}}:${{github.ref_name}}" "docker.io/${{secrets.DOCKER_HUB_IMAGE}}:$VERSION"
+                        docker push "docker.io/${{secrets.DOCKER_HUB_IMAGE}}:$VERSION"
+                      fi
+
+                      docker tag "$REGISTRY/${{github.repository}}:${{github.ref_name}}" "$REGISTRY/${{github.repository}}:latest"
+                      docker push "$REGISTRY/${{github.repository}}:latest"
+                      if [ "$DOCKER_HUB" = "true" ]; then
+                        docker tag "$REGISTRY/${{github.repository}}:${{github.ref_name}}" "docker.io/${{secrets.DOCKER_HUB_IMAGE}}:latest"
+                        docker push "docker.io/${{secrets.DOCKER_HUB_IMAGE}}:latest"
+                      fi
+                    fi
