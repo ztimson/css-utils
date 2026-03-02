@@ -61,10 +61,11 @@ Some extra classes have been added and a few class name changed to match convent
 </summary>
 
 #### Prerequisites
-- [NPM](https://docs.docker.com/install/)
+- _[NPM](https://docs.docker.com/install/)_
 
 #### Instructions
-1. Install: `npm i @ztimson/css-utils`;
+- Use the CDN: `<link href="https://css.zakscode.com/dist/css-utils.min.css" rel="stylesheet">`
+- Install with NPM: `npm i @ztimson/css-utils`;
 </details>
 
 <details>
