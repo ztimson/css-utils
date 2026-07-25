@@ -5,9 +5,11 @@
 // Colors
 :root {
 	// Theme colors -- what ever you like
-	--theme-backdrop: #dddddd;
-	--theme-primary: #ff0000;
-	--theme-accent: #0000ff;
+	--theme-primary: #4979de;
+	--theme-primary-contrast: black;
+	--theme-accent: #2caec0;
+	--theme-accent-contrast: black;
+
 	--theme-info: #6157cc;
 	--theme-success: #65c147;
 	--theme-warn: #d88750;
@@ -16,28 +18,41 @@
 	--theme-white: white;
 
 	// Misc
-	--theme-border: black;
-	--theme-animation: 0.2s linear; // Animation style
-	--theme-content-width: 1100px; // Max width of clamped content
+	--theme-animation: 0.2s linear;
+	--theme-content-width: 1100px;
 	--theme-font: Arial, sans-serif;
 
 	// Light theme
 	&, .theme-light {
-		--theme-clear: #ffffff; // Content background (Usually white or off-black)
-		--theme-text: #000000; // Text color (Should contrast bg-primary)
-		--theme-muted: #6c757d; // Muted text color (Should have less contrast against bg-primary)
+		--theme-background: #fafafa;
+		--theme-background-contrast: white;
+
+		--theme-surface: #ffffff;
+		--theme-border: #E5E7EB;
+		--theme-muted: #6c757d;
+		--theme-text: #000000;
+
+		--theme-lighter: rgba(255, 255, 255, 0.05);
+		--theme-darker: rgba(0, 0, 0, 0.05);
 	}
 
 	// Dark theme
 	.theme-dark {
-		--theme-clear: #2e2e2e; // Content background (Usually white or off-black)
-		--theme-text: #ffffff; // Text color (Should contrast bg-primary)
-		--theme-muted: #cccccc; // Muted text color (Should have less contrast against bg-primary)
+		--theme-background: #1a1a1a;
+		--theme-background-contrast: black;
+
+		--theme-surface: #2e2e2e;
+		--theme-border: #374151;
+		--theme-muted: #cccccc;
+		--theme-text: #ffffff;
+
+		--theme-lighter: rgba(255, 255, 255, 0.1);
+		--theme-darker: rgba(0, 0, 0, 0.1);
 	}
 }
 
-$breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px); // Device size
-$sizes: (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5rem); // Padding/Margin, etc...
+$breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px);
+$sizes: (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5rem);
 
 // Don't edit past this point ===============================================================================
 
@@ -46,38 +61,21 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 
 // "Fixes" ==================================================================================================
 
-// Optional opinionated styling to clean up CSS defaults
-
-.fix-anchor, .fix:not(.no-anchor-fix) {
+// Base resets applied like Bootstrap's reboot
+.fix-anchor {
 	a, a:not([href]) {
 		cursor: pointer;
 		color: var(--theme-primary);
-		&:not(:hover):not(:focus) { text-decoration: none; }
+		text-decoration: none;
 		&:hover, &:focus { text-decoration: underline; }
 	}
 }
 
-.no-fix, .no-anchor-fix {
-	a, a:not([href]) {
-		cursor: auto;
-		color: inherit;
-		text-decoration: inherit;
-	}
+.fix-button {
+	button:not(:disabled) { cursor: pointer; }
 }
 
-.fix-button, .fix:not(.no-button-fix) {
-	button:not(:disabled) {
-		cursor: pointer;
-	}
-}
-
-.no-fix, .no-button-fix {
-	button:not(:disabled) {
-		cursor: auto;
-	}
-}
-
-.fix-dom, .fix:not(.no-dom-fix) {
+.fix-dom {
 	&, html, body {
 		height: 100%;
 		width: 100%;
@@ -85,40 +83,19 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 		padding: 0;
 		overflow: auto;
 		color: var(--theme-text);
-		background-color: var(--theme-backdrop);
+		background-color: var(--theme-background);
 	}
-
 	* { box-sizing: border-box; }
 }
 
-.no-fix, .no-dom-fix {
-	&, html, body {
-		height: auto;
-		width: auto;
-		margin: revert;
-		padding: revert;
-		overflow: visible;
-		color: revert;
-		background-color: transparent;
-	}
-	* { box-sizing: content-box; }
-}
-
-.fix-focus, .fix:not(.no-focus-fix) {
+.fix-focus {
 	* {
 		outline: inherit;
 		-webkit-tap-highlight-color: transparent;
 	}
 }
 
-.no-fix, .no-focus-fix {
-	* {
-		outline: revert;
-		-webkit-tap-highlight-color: auto;
-	}
-}
-
-.fix-font, .fix:not(.no-font-fix) {
+.fix-font {
 	color: var(--theme-text);
 	font-family: var(--theme-font), sans-serif;
 
@@ -132,21 +109,44 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	h6 { font-weight: 500; font-size: 1rem; }
 }
 
-.no-fix, .no-font-fix {
-	color: revert;
-	font-family: revert;
-	p, input, select, textarea, button { font-size: revert; }
-	h1, h2, h3, h4, h5, h6, p { margin: revert; }
-	h1, h2, h3, h4, h5, h6 { font-weight: revert; font-size: revert; }
+.fix-scrollbar {
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: var(--theme-primary) var(--theme-background);
+	}
+
+	*::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+
+	*::-webkit-scrollbar-track {
+		background: var(--theme-background);
+	}
+
+	*::-webkit-scrollbar-thumb {
+		background-color: var(--theme-primary);
+		border-radius: 4px;
+		border: 2px solid var(--theme-background);
+	}
+
+	*::-webkit-scrollbar-thumb:hover {
+		background-color: var(--theme-accent);
+	}
 }
 
-.reset {
-	all: revert !important;
+// Apply all fixes by default (like Bootstrap)
+.fix {
+	@extend .fix-anchor;
+	@extend .fix-button;
+	@extend .fix-dom;
+	@extend .fix-focus;
+	@extend .fix-font;
+	@extend .fix-scrollbar;
 }
 
 // Misc =====================================================================================================
 
-// Center
 .center {
 	position: absolute;
 	left: 50%;
@@ -154,8 +154,9 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	transform: translate(-50%, -50%);
 }
 
-// Clamp (Restrict page width for large screens)
 .clamp { width: min(var(--theme-content-width), calc(100% - map.get($sizes, 3))); }
+
+.reset { all: revert !important; }
 
 // Utilities ================================================================================================
 
@@ -194,40 +195,73 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	.brbr-#{$s}, .brb-#{$s}, .bre-#{$s}, .br-#{$s} { border-bottom-right-radius: $size !important; }
 }
 
-// Colors - Background
-.bg-backdrop { background-color: var(--theme-backdrop) !important; }
-.bg-black { background-color: var(--theme-black) !important; }
-.bg-white { background-color: var(--theme-white) !important; }
+// Border - Style
+.b-dash { border-style: dashed !important; }
+.b-dot { border-style: dotted !important; }
+.b-double { border-style: double !important; }
+.b-none { border-style: none !important; }
+.b-solid { border-style: solid !important; }
+
+// Colors - Shared mixin for efficiency
+@mixin color-variant($name, $bg-var, $fg-var: null) {
+	.b-#{$name} { border-color: var(--theme-#{$bg-var}) !important; }
+	.bg-#{$name} {
+		background-color: var(--theme-#{$bg-var}) !important;
+		@if $fg-var {
+			color: var(--theme-#{$fg-var});
+			text-decoration-color: var(--theme-#{$fg-var});
+		}
+	}
+	.fg-#{$name} {
+		color: var(--theme-#{$bg-var}) !important;
+		text-decoration-color: var(--theme-#{$bg-var}) !important;
+	}
+}
+
+@include color-variant('black', 'black');
+@include color-variant('white', 'white');
+@include color-variant('background', 'background');
+@include color-variant('background-contrast', 'background-contrast');
+@include color-variant('primary', 'primary', 'primary-contrast');
+@include color-variant('primary-contrast', 'primary-contrast');
+@include color-variant('accent', 'accent', 'accent-contrast');
+@include color-variant('accent-contrast', 'accent-contrast');
+@include color-variant('surface', 'surface');
+@include color-variant('border', 'border');
+@include color-variant('text', 'text');
+@include color-variant('muted', 'muted');
+@include color-variant('lighter', 'lighter');
+@include color-variant('darker', 'darker');
+@include color-variant('info', 'info');
+@include color-variant('success', 'success');
+@include color-variant('warn', 'warn');
+@include color-variant('danger', 'danger');
+
 .bg-transparent { background-color: transparent !important; }
 .bg-container {
 	background-color: var(--theme-clear) !important;
 	color: var(--theme-text) !important;
 }
-@each $color in ('primary', 'accent', 'text', 'info', 'success', 'warn', 'danger', 'muted') {
-	.bg-#{$color} {
+
+// Lighter/Darker pseudo variants
+@each $color in ('primary', 'accent', 'background', 'surface', 'info', 'success', 'warn', 'danger', 'muted') {
+	.bg-#{$color}-lighter, .bg-#{$color}-darker {
 		position: relative;
 		z-index: 1;
-	}
-	.bg-#{$color}::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: var(--theme-#{$color});
-		filter: saturate(.5) brightness(150%);
-		border-radius: inherit;
-		z-index: -1;
-	}
-}
+		color: var(--theme-#{$color}-contrast);
+		text-decoration-color: var(--theme-#{$color}-contrast);
 
-// Colors - Foreground
-@each $color in ('black', 'clear', 'white', 'text', 'primary', 'accent', 'info', 'success', 'warn', 'danger', 'muted') {
-	.fg-#{$color} {
-		color: var(--theme-#{$color}) !important;
-		text-decoration-color: var(--theme-#{$color}) !important;
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-color: var(--theme-#{$color});
+			border-radius: inherit;
+			z-index: -1;
+		}
 	}
+	.bg-#{$color}-lighter::before { filter: saturate(.5) brightness(150%); }
+	.bg-#{$color}-darker::before { filter: saturate(.5) brightness(50%); }
 }
 
 // Cursors
@@ -240,9 +274,9 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 .fs-bold { font-weight: 500 !important; }
 .fs-normal { font-weight: normal !important; }
 .fs-italic { font-style: italic !important; }
-.fs-none { font-style: normal !important; }
+.fs-norm { font-style: normal !important; }
 .fs-lighter { font-weight: lighter !important; }
-.fs-no-dec { text-decoration: none !important; }
+.fs-none { text-decoration: none !important; }
 .fs-strike { text-decoration: line-through !important; }
 .fs-underline { text-decoration: underline !important; }
 .fs-strike.fs-underline { text-decoration: line-through underline !important; }
@@ -275,15 +309,18 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 .fs-capitalize { text-transform: capitalize !important; }
 
 // Hover
-.curs-hover:hover, .hover:hover { filter: brightness(125%) !important; }
-.curs-hover:hover {
-	cursor: pointer;
-	user-select: none;
+.hover:hover { filter: brightness(125%) !important; }
+.curs-hover {
+	&:hover {
+		filter: brightness(125%) !important;
+		cursor: pointer;
+		user-select: none;
+	}
 }
 
 // Opacity
 @each $div in $divisible {
-	.o-#{$div} { opacity: #{$div}#{'%'} !important; }
+	.o-#{$div} { opacity: #{$div * 0.01} !important; }
 }
 
 // Overflow
@@ -299,17 +336,38 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 }
 
 @each $div in $divisible {
-	.bottom-#{$div} { bottom: #{$div}#{'%'} !important; }
-	.end-#{$div} { right: #{$div}#{'%'} !important; }
-	.start-#{$div} { left: #{$div}#{'%'} !important; }
-	.top-#{$div} { top: #{$div}#{'%'} !important; }
+	.bottom-#{$div} { bottom: #{$div * 1%} !important; }
+	.end-#{$div} { right: #{$div * 1%} !important; }
+	.start-#{$div} { left: #{$div * 1%} !important; }
+	.top-#{$div} { top: #{$div * 1%} !important; }
 }
 
 // Shadows
-.shadow { box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 !important; }
-.shadow-drop { filter: drop-shadow(0px 1px 2.5px black) !important; }
-.shadow-white { filter: drop-shadow(0px 1px 2.5px white) !important; }
 .shadow-none { box-shadow: none !important; }
+.shadow-1 { box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important; }
+.shadow-2 { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08) !important; }
+.shadow,.shadow-3 { box-shadow: 0 4px 6px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.08) !important; }
+.shadow-4 { box-shadow: 0 10px 15px rgba(0,0,0,0.10), 0 4px 6px rgba(0,0,0,0.06) !important; }
+.shadow-5 { box-shadow: 0 20px 25px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.06) !important; }
+.shadow-top { box-shadow: 0 -4px 6px rgba(0,0,0,0.08) !important; }
+.shadow-bottom { box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important; }
+.shadow-start { box-shadow: -4px 0 6px rgba(0,0,0,0.08) !important; }
+.shadow-end { box-shadow: 4px 0 6px rgba(0,0,0,0.08) !important; }
+.shadow-inset-1 { box-shadow: inset 0 1px 2px rgba(0,0,0,0.10) !important; }
+.shadow-inset-2 { box-shadow: inset 0 2px 6px rgba(0,0,0,0.12) !important; }
+.shadow-drop-sm { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25)) !important; }
+.shadow-drop { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.30)) !important; }
+.shadow-drop-lg { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35)) !important; }
+@each $color, $value in (
+	'primary': #2d5dc5,
+	'accent': #15439a,
+	'info': #6157cc,
+	'success': #65c147,
+	'warn': #d88750,
+	'danger': #bf4f4f
+) {
+	.shadow-#{$color} { box-shadow: 0 4px 14px rgba($value, 0.35) !important; }
+}
 
 // User Select
 @each $s in ('all', 'auto', 'none', 'text') {
@@ -323,7 +381,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 
 // Breakpoint rules
 @mixin utilities($bp) {
-	@if $bp != null { $bp: '-#{$bp}'; }
+	@if $bp != null { $bp: '-#{$bp}'; } @else { $bp: ''; }
 
 	// Alignment
 	.align-x#{$bp} { text-align: center !important; }
@@ -386,7 +444,7 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 		display: inline-flex !important;
 		flex-direction: row-reverse !important;
 	}
-	.flex#{$bp}-fill { flex: 1 1 auto; }
+	.flex#{$bp}-fill { flex: 1 1 auto !important; }
 	.flex#{$bp}-fill-even {
 		flex-basis: 0 !important;
 		flex-grow: 1 !important;
@@ -414,15 +472,15 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	}
 
 	// Height
-	.h-auto { height: auto !important; }
+	.h#{$bp}-auto { height: auto !important; }
 	@each $div in $divisible {
-		.h#{$bp}-#{$div} { height: #{$div}#{'%'} !important; }
+		.h#{$bp}-#{$div} { height: #{$div * 1%} !important; }
 	}
 
 	// Width
-	.w-auto { width: auto !important; }
+	.w#{$bp}-auto { width: auto !important; }
 	@each $div in $divisible {
-		.w#{$bp}-#{$div} { width: #{$div}#{'%'} !important; }
+		.w#{$bp}-#{$div} { width: #{$div * 1%} !important; }
 	}
 
 	// Object Fit
@@ -432,52 +490,60 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 	.fit#{$bp}-scale { object-fit: scale-down !important; }
 	.fit#{$bp}-none { object-fit: none !important; }
 
-	.m#{$bp}-auto { margin: auto !important; } // Margin
-	.mx#{$bp}-auto { // Margin
+	// Margin auto
+	.m#{$bp}-auto { margin: auto !important; }
+	.mx#{$bp}-auto {
 		margin-left: auto !important;
 		margin-right: auto !important;
 	}
-	.my#{$bp}-auto { // Margin
+	.my#{$bp}-auto {
 		margin-top: auto !important;
 		margin-bottom: auto !important;
 	}
 
 	// Visibility
-	.visible#{$bp} {  visibility: visible !important; }
-	.hidden#{$bp} {  visibility: hidden !important; }
+	.visible#{$bp} { visibility: visible !important; }
+	.hidden#{$bp} { visibility: hidden !important; }
 
 	@each $s, $size in $sizes {
-		.gap#{$bp}-#{$s} { gap: $size !important; } // Gap
-		.b#{$bp}-#{$s} { border: #{$s}px solid var(--theme-border) !important; } // Border
-		.m#{$bp}-#{$s} { margin: $size !important; } // Margin
-		.p#{$bp}-#{$s} { padding: $size !important; } // Padding
-		.mx#{$bp}-#{$s} { // Margin
+		.gap#{$bp}-#{$s} { gap: $size !important; }
+		.b#{$bp}-#{$s} {
+			border-width: #{$s}px !important;
+			border-style: solid;
+			border-color: var(--theme-border);
+		}
+		.m#{$bp}-#{$s} { margin: $size !important; }
+		.p#{$bp}-#{$s} { padding: $size !important; }
+		.mx#{$bp}-#{$s} {
 			margin-left: $size !important;
 			margin-right: $size !important;
 		}
-		.px#{$bp}-#{$s} { // Padding
+		.px#{$bp}-#{$s} {
 			padding-left: $size !important;
 			padding-right: $size !important;
 		}
-		.my#{$bp}-#{$s} { // Margin
+		.my#{$bp}-#{$s} {
 			margin-top: $size !important;
 			margin-bottom: $size !important;
 		}
-		.py#{$bp}-#{$s} { // Padding
+		.py#{$bp}-#{$s} {
 			padding-top: $size !important;
 			padding-bottom: $size !important;
 		}
-
-		.order#{$bp}-#{$s} { order: $s !important; } // Flex order
+		.order#{$bp}-#{$s} { order: $s !important; }
 	}
 
 	@each $d, $dir in $direction {
-		.m#{$d}#{$bp}-auto { margin-#{$dir}: auto !important; } // Margin
+		.m#{$d}#{$bp}-auto { margin-#{$dir}: auto !important; }
 
 		@each $s, $size in $sizes {
-			.b#{$d}#{$bp}-#{$s} { border-#{$dir}: #{$s}px solid var(--theme-border) !important; } // Border
-			.m#{$d}#{$bp}-#{$s} { margin-#{$dir}: $size !important; } // Margin
-			.p#{$d}#{$bp}-#{$s} { padding-#{$dir}: $size !important; } // Padding
+			.b#{$d}#{$bp}-#{$s} {
+				border-#{$dir}-width: #{$s}px !important;
+				border-#{$dir}-style: solid;
+				border-#{$dir}-color: var(--theme-border);
+			}
+			.m#{$d}#{$bp}-#{$s} { margin-#{$dir}: $size !important; }
+			.p#{$d}#{$bp}-#{$s} { padding-#{$dir}: $size !important; }
 		}
 	}
 }
@@ -489,17 +555,3 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 		@include utilities($breakpoint);
 	}
 }
-
-// Border - Colors
-@each $color in ('black', 'white', 'primary', 'accent', 'info', 'success', 'text', 'warn', 'danger', 'muted') {
-	.b-#{$color} { border-color: var(--theme-#{$color}) !important; }
-}
-
-// Border - Style
-.b-dash { border-style: dashed !important; }
-.b-dot-dash { border-style: dot-dash !important; }
-.b-dot-dot-dash { border-style: dot-dot-dash !important; }
-.b-dot { border-style: dotted !important; }
-.b-double { border-style: double !important; }
-.b-none { border-style: none !important; }
-.b-solid { border-style: solid !important; }
