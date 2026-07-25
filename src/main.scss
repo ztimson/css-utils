@@ -238,10 +238,6 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 @include color-variant('danger', 'danger');
 
 .bg-transparent { background-color: transparent !important; }
-.bg-container {
-	background-color: var(--theme-clear) !important;
-	color: var(--theme-text) !important;
-}
 
 // Lighter/Darker pseudo variants
 @each $color in ('primary', 'accent', 'background', 'surface', 'info', 'success', 'warn', 'danger', 'muted') {
@@ -349,10 +345,10 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 .shadow,.shadow-3 { box-shadow: 0 4px 6px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.08) !important; }
 .shadow-4 { box-shadow: 0 10px 15px rgba(0,0,0,0.10), 0 4px 6px rgba(0,0,0,0.06) !important; }
 .shadow-5 { box-shadow: 0 20px 25px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.06) !important; }
-.shadow-top { box-shadow: 0 -4px 6px rgba(0,0,0,0.08) !important; }
-.shadow-bottom { box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important; }
-.shadow-start { box-shadow: -4px 0 6px rgba(0,0,0,0.08) !important; }
-.shadow-end { box-shadow: 4px 0 6px rgba(0,0,0,0.08) !important; }
+.shadow-top { box-shadow: 0 -4px 6px rgba(0,0,0,0.10) !important; }
+.shadow-bottom { box-shadow: 0 4px 6px rgba(0,0,0,0.10) !important; }
+.shadow-start { box-shadow: -4px 0 6px rgba(0,0,0,0.10) !important; }
+.shadow-end { box-shadow: 4px 0 6px rgba(0,0,0,0.10) !important; }
 .shadow-inset-1 { box-shadow: inset 0 1px 2px rgba(0,0,0,0.10) !important; }
 .shadow-inset-2 { box-shadow: inset 0 2px 6px rgba(0,0,0,0.12) !important; }
 .shadow-drop-sm { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25)) !important; }
