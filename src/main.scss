@@ -5,6 +5,8 @@
 // Colors
 :root {
 	// Theme colors -- what ever you like
+	--theme-background: #fafafa;
+	--theme-background-contrast: black;
 	--theme-primary: #4979de;
 	--theme-primary-contrast: black;
 	--theme-accent: #2caec0;
@@ -24,9 +26,6 @@
 
 	// Light theme
 	&, .theme-light {
-		--theme-background: #fafafa;
-		--theme-background-contrast: white;
-
 		--theme-surface: #ffffff;
 		--theme-border: #E5E7EB;
 		--theme-muted: #6c757d;
@@ -38,9 +37,6 @@
 
 	// Dark theme
 	.theme-dark {
-		--theme-background: #1a1a1a;
-		--theme-background-contrast: black;
-
 		--theme-surface: #2e2e2e;
 		--theme-border: #374151;
 		--theme-muted: #cccccc;
