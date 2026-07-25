@@ -367,12 +367,13 @@
 					</div>
 					<p class="fg-muted fs-1 mb-3">Opt-in opinionated resets. Apply <span class="chip">.fix</span> to enable all, or use granular classes.</p>
 					<div class="demo-card flex-r flex-wrap gap-2">
-						<span class="chip">.[no-]fix</span>
-						<span class="chip">.[no-]fix-anchor</span>
-						<span class="chip">.[no-]fix-button</span>
-						<span class="chip">.[no-]fix-dom</span>
-						<span class="chip">.[no-]fix-focus</span>
-						<span class="chip">.[no-]fix-font</span>
+						<span class="chip">.fix</span>
+						<span class="chip">.fix-anchor</span>
+						<span class="chip">.fix-button</span>
+						<span class="chip">.fix-dom</span>
+						<span class="chip">.fix-focus</span>
+						<span class="chip">.fix-font</span>
+						<span class="chip">.fix-scrollbar</span>
 						<span class="chip">.reset</span>
 					</div>
 					<div class="demo-card mt-3">
@@ -380,8 +381,8 @@
 						<div class="fix-anchor mb-3">
 							<a>This link uses .fix-anchor — styled with theme color, underlines on hover with cursor</a>
 						</div>
-						<div class="reset">
-							<a>This link uses .no-fix / reset — inherits all styles, no decoration</a>
+						<div>
+							<a class="reset">Use <span class="fg-accent">.reset</span> to remove fixes & styling</a>
 						</div>
 					</div>
 				</div>
@@ -1264,31 +1265,35 @@
 					</div>
 					<div class="syntax">Margin: .m[b|e|s|t|x|y]-[bp]-[0–5|auto]</div>
 					<div class="syntax">Padding: .p[b|e|s|t|x|y]-[bp]-[0–5]</div>
-					<div class="demo-card flex-r flex-wrap gap-1 align-items-start">
-						<div class="bg-warn m-0 b-1 b-warn"><div class="bg-success p-0 b-1 b-success fg-white fs-1">.m-0 .p-0</div></div>
-						<div class="bg-warn m-1 b-1 b-warn"><div class="bg-success p-1 b-1 b-success fg-white fs-1">.m-1 .p-1</div></div>
-						<div class="bg-warn m-2 b-1 b-warn"><div class="bg-success p-2 b-1 b-success fg-white fs-1">.m-2 .p-2</div></div>
-						<div class="bg-warn m-3 b-1 b-warn"><div class="bg-success p-3 b-1 b-success fg-white fs-1">.m-3 .p-3</div></div>
-						<div class="bg-warn m-4 b-1 b-warn"><div class="bg-success p-4 b-1 b-success fg-white fs-1">.m-4 .p-4</div></div>
-					</div>
-					<div class="demo-card flex-r flex-wrap gap-1 align-items-start mt-3">
-						<div class="bg-warn b-1 b-warn"><div class="bg-success mt-3 b-1 b-success fg-white fs-1">.mt-3</div></div>
-						<div class="bg-warn b-1 b-warn"><div class="bg-success mb-3 b-1 b-success fg-white fs-1">.mb-3</div></div>
-						<div class="bg-warn b-1 b-warn"><div class="bg-success ms-3 b-1 b-success fg-white fs-1">.ms-3</div></div>
-						<div class="bg-warn b-1 b-warn"><div class="bg-success me-3 b-1 b-success fg-white fs-1">.me-3</div></div>
-						<div class="bg-warn b-1 b-warn"><div class="bg-success mx-3 b-1 b-success fg-white fs-1">.mx-3</div></div>
-						<div class="bg-warn b-1 b-warn"><div class="bg-success my-3 b-1 b-success fg-white fs-1">.my-3</div></div>
-						<div class="bg-warn b-1 b-warn w-100"><div class="bg-success mx-auto p-2 b-1 b-success fg-white fs-1 align-x" style="width:120px">.mx-auto</div></div>
-					</div>
-					<div class="demo-card mt-3">
-						<div class="sub-label">Directional padding</div>
+					<div class="demo-card flex-c flex-wrap gap-1 align-items-start mt-3">
 						<div class="flex-r flex-wrap gap-2">
-							<div class="bg-success pt-3 b-1 b-success fg-white fs-1">.pt-3</div>
-							<div class="bg-success pb-3 b-1 b-success fg-white fs-1">.pb-3</div>
-							<div class="bg-success ps-3 b-1 b-success fg-white fs-1">.ps-3</div>
-							<div class="bg-success pe-3 b-1 b-success fg-white fs-1">.pe-3</div>
-							<div class="bg-success px-3 b-1 b-success fg-white fs-1">.px-3</div>
-							<div class="bg-success py-3 b-1 b-success fg-white fs-1">.py-3</div>
+							<div class="bg-warn b-1 b-warn w-100"><div class="bg-success mx-auto p-2 b-1 b-success fg-white fs-1 align-x" style="width:120px">.mx-auto</div></div>
+							<div>
+								<div class="bg-warn b-1 b-warn"><div class="bg-success my-3 py-3 b-1 b-success fg-white fs-1">.my-3 .py-3</div></div>
+							</div>
+							<div>
+								<div class="bg-warn b-1 b-warn"><div class="bg-success mt-3 pt-3 b-1 b-success fg-white fs-1">.mt-3 .pt-3</div></div>
+							</div>
+							<div>
+								<div class="bg-warn b-1 b-warn"><div class="bg-success mb-3 pb-3 b-1 b-success fg-white fs-1">.mb-3 .pb-3</div></div>
+							</div>
+							<div>
+								<div class="bg-warn b-1 b-warn"><div class="bg-success ms-3 ps-3 b-1 b-success fg-white fs-1">.ms-3 .ps-3</div></div>
+							</div>
+							<div>
+								<div class="bg-warn b-1 b-warn"><div class="bg-success me-3 pe-3 b-1 b-success fg-white fs-1">.me-3 .pe-3</div></div>
+							</div>
+							<div>
+								<div class="bg-warn b-1 b-warn"><div class="bg-success mx-3 px-3 b-1 b-success fg-white fs-1">.mx-3 .px-3</div></div>
+							</div>
+						</div>
+						<div class="flex-r flex-wrap gap-1 align-items-center">
+							<div class="bg-warn m-0 b-1 b-warn"><div class="bg-success p-0 b-1 b-success fg-white fs-1">.m-0 .p-0</div></div>
+							<div class="bg-warn m-1 b-1 b-warn"><div class="bg-success p-1 b-1 b-success fg-white fs-1">.m-1 .p-1</div></div>
+							<div class="bg-warn m-2 b-1 b-warn"><div class="bg-success p-2 b-1 b-success fg-white fs-1">.m-2 .p-2</div></div>
+							<div class="bg-warn m-3 b-1 b-warn"><div class="bg-success p-3 b-1 b-success fg-white fs-1">.m-3 .p-3</div></div>
+							<div class="bg-warn m-4 b-1 b-warn"><div class="bg-success p-4 b-1 b-success fg-white fs-1">.m-4 .p-4</div></div>
+							<div class="bg-warn m-5 b-1 b-warn"><div class="bg-success p-5 b-1 b-success fg-white fs-1">.m-5 .p-5</div></div>
 						</div>
 					</div>
 				</div>
