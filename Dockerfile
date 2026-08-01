@@ -15,3 +15,4 @@ COPY src /usr/share/nginx/html/src
 COPY index.html /usr/share/nginx/html
 COPY wave.webp /usr/share/nginx/html
 COPY favicon.webp /usr/share/nginx/html
+COPY SKILL.md /usr/share/nginx/html
