@@ -327,6 +327,10 @@
 					<div class="demo-card">
 						<p class="fg-muted fs-1 mb-3">All theming through CSS variables — swap them at runtime without recompiling.</p>
 						<pre class="bg-darker p-3 br-2 fg-success fs-1"><code>:root {
+:root {
+	// Theme colors -- what ever you like
+	--theme-background: #fafafa;
+	--theme-background-contrast: black;
 	--theme-primary: #4979de;
 	--theme-primary-contrast: black;
 	--theme-accent: #2caec0;
@@ -339,35 +343,23 @@
 	--theme-black: black;
 	--theme-white: white;
 
+	// Misc
 	--theme-animation: 0.2s linear;
 	--theme-content-width: 1100px;
-	--theme-font: 'Arial', sans-serif;
+	--theme-font: Arial, sans-serif;
+
+	// Theme dependant (light/dark)
+	color-scheme: light dark;
+	--theme-surface: light-dark(#ffffff, #2e2e2e);
+	--theme-border: light-dark(#E5E7EB, #374151);
+	--theme-muted: light-dark(#6c757d, #cccccc);
+	--theme-text: light-dark(#000000, #ffffff);
+	--theme-lighter: light-dark(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+	--theme-darker: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
 }
 
-.theme-light {
-	--theme-background: #fafafa;
-	--theme-background-contrast: white;
-
-	--theme-surface: #ffffff;
-	--theme-border: #E5E7EB;
-	--theme-muted: #6c757d;
-	--theme-text: #000000;
-
-	--theme-lighter: rgba(255, 255, 255, 0.05);
-	--theme-darker: rgba(0, 0, 0, 0.05);
-}
-
-.theme-dark  {
-	--theme-background: #1a1a1a;
-	--theme-background-contrast: black;
-
-	--theme-surface: #2e2e2e;
-	--theme-border: #374151;
-	--theme-muted: #cccccc;
-	--theme-text: #ffffff;
-
-	--theme-lighter: rgba(255, 255, 255, 0.1);
-	--theme-darker: rgba(0, 0, 0, 0.1);
+.theme-light { color-scheme: light !important; }
+.theme-dark { color-scheme: dark !important; }
 }</code></pre>
 					</div>
 				</div>
