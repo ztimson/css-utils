@@ -11,7 +11,7 @@
 	--theme-accent: #2caec0;
 	--theme-accent-contrast: black;
 
-	--theme-info: #6157cc;
+	--theme-info: #5786cc;
 	--theme-success: #65c147;
 	--theme-warn: #d88750;
 	--theme-danger: #bf4f4f;
@@ -22,6 +22,7 @@
 	--theme-animation: 0.2s linear;
 	--theme-content-width: 1100px;
 	--theme-font: Arial, sans-serif;
+	--theme-radius: 0.5rem;
 
 	// Theme dependant (light/dark)
 	color-scheme: light dark;
@@ -29,8 +30,13 @@
 	--theme-border: light-dark(#E5E7EB, #374151);
 	--theme-muted: light-dark(#6c757d, #cccccc);
 	--theme-text: light-dark(#000000, #ffffff);
-	--theme-lighter: light-dark(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
 	--theme-darker: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
+	--theme-lighter: light-dark(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+	--theme-shade: light-dark(var(--theme-darker), var(--theme-lighter));
+	--theme-shade-alt: light-dark(var(--theme-lighter), var(--theme-darker));
+
+	scrollbar-width: thin;
+	scrollbar-color: var(--theme-border) transparent;
 }
 
 .theme-light { color-scheme: light !important; }
@@ -38,6 +44,17 @@
 
 $breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px);
 $sizes: (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2.5rem);
+
+// Colors that get generated lighter/darker variants (computed once as CSS vars below)
+$variant-colors: ('primary', 'accent', 'background', 'surface', 'info', 'success', 'warn', 'danger', 'muted', 'border', 'text', 'black', 'white');
+
+// Generate lighter/darker CSS custom properties once, so all utilities can reuse them
+:root {
+	@each $c in $variant-colors {
+		--theme-#{$c}-lighter: color-mix(in srgb, var(--theme-#{$c}) 80%, white);
+		--theme-#{$c}-darker: color-mix(in srgb, var(--theme-#{$c}) 80%, black);
+	}
+}
 
 // Don't edit past this point ===============================================================================
 
@@ -171,15 +188,17 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 }
 
 // Border - Style
-.b-dash { border-style: dashed !important; }
-.b-dot { border-style: dotted !important; }
-.b-double { border-style: double !important; }
-.b-none { border-style: none !important; }
-.b-solid { border-style: solid !important; }
+.b-dash { border-style: dashed !important; border-color: var(--theme-border); }
+.b-dot { border-style: dotted !important; border-color: var(--theme-border); }
+.b-double { border-style: double !important; border-color: var(--theme-border); }
+.b-none { border-style: none !important; border-color: var(--theme-border); }
+.b-solid { border-style: solid !important; border-color: var(--theme-border); }
 
-// Colors - Shared mixin for efficiency
-@mixin color-variant($name, $bg-var, $fg-var: null) {
-	.b-#{$name} { border-color: var(--theme-#{$bg-var}) !important; }
+// Colors - Shared mixin, generates border/background/foreground variants for a color
+@mixin color-variant($name, $bg-var, $fg-var: null, $border: true) {
+	@if $border {
+		.b-#{$name} { border-color: var(--theme-#{$bg-var}) !important; }
+	}
 	.bg-#{$name} {
 		background-color: var(--theme-#{$bg-var}) !important;
 		@if $fg-var {
@@ -212,27 +231,24 @@ $divisible: (0, 10, 20, 25, 30, 33, 34, 40, 50, 60, 66, 70, 75, 80, 90, 100);
 @include color-variant('warn', 'warn');
 @include color-variant('danger', 'danger');
 
+// Lighter/darker variants (bg-, fg- only) for every color in $variant-colors, using the CSS vars generated above
+@each $c in $variant-colors {
+	@include color-variant('#{$c}-lighter', '#{$c}-lighter', $border: false);
+	@include color-variant('#{$c}-darker', '#{$c}-darker', $border: false);
+}
+
+.bg-shade { background-color: var(--theme-shade); }
+.bg-shade-alt { background-color: var(--theme-shade-alt); }
 .bg-transparent { background-color: transparent !important; }
 
-// Lighter/Darker pseudo variants
-@each $color in ('primary', 'accent', 'background', 'surface', 'info', 'success', 'warn', 'danger', 'muted') {
-	.bg-#{$color}-lighter, .bg-#{$color}-darker {
-		position: relative;
-		z-index: 1;
-		color: var(--theme-#{$color}-contrast);
-		text-decoration-color: var(--theme-#{$color}-contrast);
-
-		&::before {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background-color: var(--theme-#{$color});
-			border-radius: inherit;
-			z-index: -1;
+$glow-intensity: ('': 50%, '-sm': 25%, '-lg': 75%);
+@each $name in ('primary', 'accent', 'info', 'success', 'warn', 'danger') {
+	@each $suffix, $intensity in $glow-intensity {
+		.bg-glow-#{$name}#{$suffix} {
+			background-image: radial-gradient(circle at top left, color-mix(in srgb, var(--theme-#{$name}) #{$intensity}, transparent) 0%, transparent 110%);
+			background-repeat: no-repeat;
 		}
 	}
-	.bg-#{$color}-lighter::before { filter: saturate(.5) brightness(150%); }
-	.bg-#{$color}-darker::before { filter: saturate(.5) brightness(50%); }
 }
 
 // Cursors

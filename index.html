@@ -10,25 +10,20 @@
 		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 		<link href="./dist/css-utils.min.css" rel="stylesheet">
+		<link href="./dist/components.min.css" rel="stylesheet">
 
 		<style>
-			/* ── Page chrome (not utility classes) ── */
 			:root {
 				--mono: 'JetBrains Mono', monospace;
 				--page-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 			}
 
-			:root .theme-dark {
+			html.theme-dark {
 				--theme-background: #1a1a1a !important;
 				--theme-background-contrast: white !important;
 			}
 
 			* { box-sizing: border-box; transition: var(--page-transition); }
-
-			html, body {
-				margin: 0; padding: 0; min-height: 100%;
-				font-family: 'Arial', sans-serif;
-			}
 
 			code {
 				background: transparent !important;
@@ -42,7 +37,7 @@
 			.page-layout { display: flex; min-height: 100vh; }
 
 			.sidebar {
-				width: 220px; flex-shrink: 0;
+				width: 250px; flex-shrink: 0;
 				position: sticky;
 				top: 0;
 				height: 100vh;
@@ -94,13 +89,6 @@
 				padding: 56px 48px 44px; position: relative; overflow: hidden;
 			}
 
-			.hero::before {
-				content: ''; position: absolute; top: -100px; left: -60px;
-				width: 420px; height: 420px;
-				background: radial-gradient(circle, rgba(79,126,248,0.1) 0%, transparent 70%);
-				pointer-events: none;
-			}
-
 			.hero-eyebrow {
 				font-family: 'JetBrains Mono', monospace;
 				font-size: 0.68rem; color: var(--theme-primary);
@@ -121,28 +109,11 @@
 			.hero-stat .lbl { font-size: 0.66rem; color: var(--theme-muted); letter-spacing: 0.06em; text-transform: uppercase; }
 			.stat-div { width: 1px; height: 36px; background-color: var(--theme-border); }
 
-			/* Theme toggle */
+			/* Theme toggle — positioning only; the switch itself is the .toggle component */
 			.theme-toggle {
 				position: absolute; top: 20px; right: 24px;
-				display: flex; align-items: center; gap: 8px;
-				font-size: 0.72rem; color: var(--theme-muted);
+				font-size: 0.9rem;
 			}
-
-			.toggle-track {
-				width: 40px; height: 22px; border-radius: 11px; cursor: pointer;
-				background-color: var(--theme-border); position: relative;
-				transition: background-color 0.2s ease; border: 1px solid var(--theme-border);
-			}
-
-			.toggle-track.on { background-color: var(--theme-primary); }
-
-			.toggle-thumb {
-				position: absolute; top: 2px; left: 2px;
-				width: 16px; height: 16px; border-radius: 50%;
-				background: #fff; transition: transform 0.2s ease;
-			}
-
-			.toggle-track.on .toggle-thumb { transform: translateX(18px); }
 
 			/* Sections */
 			.section { padding: 44px 48px 0; }
@@ -171,13 +142,6 @@
 			.sub-label {
 				font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em;
 				text-transform: uppercase; color: var(--theme-muted); margin-bottom: 12px;
-			}
-
-			/* Demo card */
-			.demo-card {
-				background-color: var(--theme-surface);
-				border: 1px solid var(--theme-border);
-				border-radius: 10px; padding: 20px; margin-bottom: 14px;
 			}
 
 			/* Syntax pill */
@@ -213,6 +177,16 @@
 				left: 14px;
 			}
 
+			/* Theme editor controls */
+			.theme-control {
+				display: flex; flex-direction: column; gap: 4px; width: 150px;
+			}
+			.theme-control input[type="color"] {
+				width: 100%; height: 34px; padding: 2px;
+				border: 1px solid var(--theme-border); border-radius: 6px;
+				background: var(--theme-surface); cursor: pointer;
+			}
+
 			/* Mobile */
 			@media (max-width: 768px) {
 				.sidebar { display: none; }
@@ -220,13 +194,6 @@
 				.section { padding: 28px 20px 0; }
 				.hero h1 { font-size: 1.8rem; }
 			}
-
-			/* Animation demo states */
-			.anim-ball.moved-all    { left: calc(100% - 40px); opacity: 0.2; background-color: var(--theme-info); }
-			.anim-ball.moved-color  { background-color: var(--theme-info); }
-			.anim-ball.moved-opacity{ opacity: 0.15; }
-			.anim-ball.moved-pos    { left: calc(100% - 40px); }
-			.anim-ball.moved-trans  { transform: translateY(-50%) translateX(200px); }
 		</style>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -238,41 +205,56 @@
 
 			<!-- ── Sidebar ── -->
 			<nav class="sidebar bg-surface br-1">
-				<div class="bg-darker h-100">
-					<div class="sidebar-logo bb-1">
-						<span class="wordmark fs-1">@ztimson/css-utils</span>
-						<div class="tagline">Utility-first CSS library • <a href="SKILL.md" target="_blank">SKILL.md</a></div>
-
-					</div>
-					<div class="nav-group">
-						<div class="nav-label">Getting Started</div>
-						<a href="#install"  class="nav-link">Install</a>
-						<a href="#theming"  class="nav-link">Theming</a>
-						<a href="#fixes"    class="nav-link">Fixes</a>
-					</div>
-					<div class="nav-group">
-						<div class="nav-label">Utilities</div>
-						<a href="#misc"       class="nav-link">Misc</a>
-						<a href="#animate"    class="nav-link">Animate</a>
-						<a href="#borders"    class="nav-link">Borders</a>
-						<a href="#colors"     class="nav-link">Colors</a>
-						<a href="#cursors"    class="nav-link">Cursors</a>
-						<a href="#display"    class="nav-link">Display</a>
-						<a href="#flex"       class="nav-link">Flex</a>
-						<a href="#float"      class="nav-link">Float</a>
-						<a href="#font"       class="nav-link">Font Style</a>
-						<a href="#hover"      class="nav-link">Hover</a>
-						<a href="#object-fit" class="nav-link">Object Fit</a>
-						<a href="#opacity"    class="nav-link">Opacity</a>
-						<a href="#overflow"   class="nav-link">Overflow</a>
-						<a href="#position"   class="nav-link">Position</a>
-						<a href="#shadows"    class="nav-link">Shadows</a>
-						<a href="#select"     class="nav-link">User Select</a>
-						<a href="#size"       class="nav-link">Size</a>
-						<a href="#spacing"    class="nav-link">Spacing</a>
-						<a href="#visibility" class="nav-link">Visibility</a>
-						<a href="#z-index"    class="nav-link">Z-Index</a>
-					</div>
+				<div class="sidebar-logo bb-1">
+					<span class="wordmark fs-1">@ztimson/css-utils</span>
+					<div class="tagline">Utility-first CSS library • <a href="SKILL.md" target="_blank">SKILL.md</a></div>
+				</div>
+				<div class="nav-group">
+					<div class="nav-label">Getting Started</div>
+					<a href="#install"  class="nav-link">Install</a>
+					<a href="#theming"  class="nav-link">Theming</a>
+					<a href="#fixes"    class="nav-link">Fixes</a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-label">Components</div>
+					<a href="#banner"      class="nav-link">Banner</a>
+					<a href="#button"      class="nav-link">Button</a>
+					<a href="#card"        class="nav-link">Card</a>
+					<a href="#checkbox"    class="nav-link">Checkbox</a>
+					<a href="#radio"       class="nav-link">Radio</a>
+					<a href="#toggle"      class="nav-link">Toggle</a>
+					<a href="#chip-component" class="nav-link">Chip</a>
+					<a href="#expander"    class="nav-link">Expander</a>
+					<a href="#indicator"   class="nav-link">Indicator</a>
+					<a href="#input"       class="nav-link">Input</a>
+					<a href="#input-group" class="nav-link">Input Group</a>
+					<a href="#select"      class="nav-link">Select</a>
+					<a href="#range"       class="nav-link">Range</a>
+					<a href="#table"       class="nav-link">Table</a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-label">Utilities</div>
+					<a href="#misc"        class="nav-link">Misc</a>
+					<a href="#animate"     class="nav-link">Animate</a>
+					<a href="#borders"     class="nav-link">Borders</a>
+					<a href="#colors"      class="nav-link">Colors</a>
+					<a href="#glow"        class="nav-link">Glow</a>
+					<a href="#cursors"     class="nav-link">Cursors</a>
+					<a href="#display"     class="nav-link">Display</a>
+					<a href="#flex"        class="nav-link">Flex</a>
+					<a href="#float"       class="nav-link">Float</a>
+					<a href="#font"        class="nav-link">Font Style</a>
+					<a href="#hover"       class="nav-link">Hover</a>
+					<a href="#object-fit"  class="nav-link">Object Fit</a>
+					<a href="#opacity"     class="nav-link">Opacity</a>
+					<a href="#overflow"    class="nav-link">Overflow</a>
+					<a href="#position"    class="nav-link">Position</a>
+					<a href="#shadows"     class="nav-link">Shadows</a>
+					<a href="#user-select" class="nav-link">User Select</a>
+					<a href="#size"        class="nav-link">Size</a>
+					<a href="#spacing"     class="nav-link">Spacing</a>
+					<a href="#visibility"  class="nav-link">Visibility</a>
+					<a href="#z-index"     class="nav-link">Z-Index</a>
 				</div>
 			</nav>
 
@@ -280,13 +262,13 @@
 			<main class="main pb-5">
 
 				<!-- Hero -->
-				<div class="hero" id="top">
-					<div class="theme-toggle">
-						☀︎
-						<div class="toggle-track" id="themeToggle" onclick="toggleTheme()">
-							<div class="toggle-thumb"></div>
-						</div>
-						☽
+				<div class="hero bg-glow-primary-sm" id="top">
+					<div class="theme-toggle flex-r align-items-center gap-2">
+						<span>☀︎</span>
+						<label class="toggle">
+							<input type="checkbox" id="themeToggleInput">
+						</label>
+						<span>☽</span>
 					</div>
 					<div class="hero-eyebrow fs-1">CSS Utility Library</div>
 					<h1>@ztimson/<strong>css-utils</strong></h1>
@@ -306,7 +288,7 @@
 					<div class="section-header">
 						<h2>Install</h2><span class="section-id">setup</span>
 					</div>
-					<div class="demo-card">
+					<div class="card">
 						<div class="sub-label">NPM</div>
 						<pre class="bg-darker p-3 br-2 fg-success fs-1 mb-3"><code>npm install @ztimson/css-utils</code></pre>
 						<div class="sub-label">Import (pick one)</div>
@@ -324,43 +306,26 @@
 					<div class="section-header">
 						<h2>Theming</h2><span class="section-id">setup</span>
 					</div>
-					<div class="demo-card">
-						<p class="fg-muted fs-1 mb-3">All theming through CSS variables — swap them at runtime without recompiling.</p>
-						<pre class="bg-darker p-3 br-2 fg-success fs-1"><code>:root {
-:root {
-	// Theme colors -- what ever you like
-	--theme-background: #fafafa;
-	--theme-background-contrast: black;
-	--theme-primary: #4979de;
-	--theme-primary-contrast: black;
-	--theme-accent: #2caec0;
-	--theme-accent-contrast: black;
+					<p class="fg-muted fs-1 mb-3">All theming through CSS variables — swap them at runtime without recompiling. Try it below: the controls write straight to <span class="fg-accent">:root</span> and affect every utility &amp; component on this page.</p>
 
-	--theme-info: #6157cc;
-	--theme-success: #65c147;
-	--theme-warn: #d88750;
-	--theme-danger: #bf4f4f;
-	--theme-black: black;
-	--theme-white: white;
+					<!-- Live editor -->
+					<div class="sub-section">
+						<div class="sub-label">Live Theme Editor</div>
+						<div class="card">
+							<div class="flex-r justify-between align-items-center gap-3 mb-3 flex-wrap">
+								<p class="fg-muted fs-1 m-0">Edit a variable and watch the whole page update in real time.</p>
+								<button class="button" id="themeReset">Reset to defaults</button>
+							</div>
+							<div id="themeControls" class="flex-r flex-wrap gap-3"></div>
+						</div>
+					</div>
 
-	// Misc
-	--theme-animation: 0.2s linear;
-	--theme-content-width: 1100px;
-	--theme-font: Arial, sans-serif;
-
-	// Theme dependant (light/dark)
-	color-scheme: light dark;
-	--theme-surface: light-dark(#ffffff, #2e2e2e);
-	--theme-border: light-dark(#E5E7EB, #374151);
-	--theme-muted: light-dark(#6c757d, #cccccc);
-	--theme-text: light-dark(#000000, #ffffff);
-	--theme-lighter: light-dark(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
-	--theme-darker: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
-}
-
-.theme-light { color-scheme: light !important; }
-.theme-dark { color-scheme: dark !important; }
-}</code></pre>
+					<!-- Full reference, generated from the page's actual computed values so it's never out of sync -->
+					<div class="sub-section">
+						<div class="sub-label">Theme Variables — current <span class="fg-accent">:root</span> values</div>
+						<div class="card">
+							<pre class="bg-darker p-3 br-2 fg-success fs-1" style="margin:0"><code id="themeCode"></code></pre>
+						</div>
 					</div>
 				</div>
 
@@ -369,8 +334,8 @@
 					<div class="section-header">
 						<h2>Fixes</h2><span class="section-id">utility</span>
 					</div>
-					<p class="fg-muted fs-1 mb-3">Opt-in opinionated resets. Apply <span class="chip">.fix</span> to enable all, or use granular classes.</p>
-					<div class="demo-card flex-r flex-wrap gap-2">
+					<p class="fg-muted fs-1 mb-3">Opt-in opinionated resets. Apply <span class="chip">.fix</span> to enable all, or use granular classes. This very page is themed with <span class="chip">.fix</span> — its background, font and scrollbars all come from these classes rather than bespoke CSS.</p>
+					<div class="card flex-r flex-wrap gap-2">
 						<span class="chip">.fix</span>
 						<span class="chip">.fix-anchor</span>
 						<span class="chip">.fix-button</span>
@@ -380,7 +345,7 @@
 						<span class="chip">.fix-scrollbar</span>
 						<span class="chip">.reset</span>
 					</div>
-					<div class="demo-card mt-3">
+					<div class="card mt-3">
 						<div class="sub-label">Anchor fix example</div>
 						<div class="fix-anchor mb-3">
 							<a>This link uses .fix-anchor — styled with theme color, underlines on hover with cursor</a>
@@ -391,6 +356,260 @@
 					</div>
 				</div>
 
+				<h2 class="ms-5 mt-5 mb-0 ps-1">Components</h2>
+
+				<!-- ══ Banner ══ -->
+				<div class="section" id="banner">
+					<div class="section-header">
+						<h2>Banner</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.banner .info .success .warn .danger .primary .accent .black .white</div>
+					<div class="card flex-c gap-2">
+						<div class="banner">Default banner uses <span class="fg-primary">--theme-info</span> as its accent color.</div>
+						<div class="banner info">Info — same accent as the default, spelled out explicitly.</div>
+						<div class="banner success">Success — everything went well.</div>
+						<div class="banner warn">Warn — check this before continuing.</div>
+						<div class="banner danger">Danger — something went wrong.</div>
+						<div class="banner primary">Primary — themed with your brand's primary color.</div>
+						<div class="banner accent">Accent — themed with your brand's accent color.</div>
+						<div class="banner black">Black — high-contrast neutral banner.</div>
+						<div class="banner white">White — high-contrast neutral banner.</div>
+					</div>
+				</div>
+
+				<!-- ══ Button ══ -->
+				<div class="section" id="button">
+					<div class="section-header">
+						<h2>Button</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.button .info .success .warn .danger .primary .accent .white .black</div>
+					<div class="card flex-r flex-wrap gap-2">
+						<button class="button">Default</button>
+						<button class="button info">Info</button>
+						<button class="button success">Success</button>
+						<button class="button warn">Warn</button>
+						<button class="button danger">Danger</button>
+						<button class="button primary">Primary</button>
+						<button class="button accent">Accent</button>
+						<button class="button white">White</button>
+						<button class="button black">Black</button>
+					</div>
+				</div>
+
+				<!-- ══ Card ══ -->
+				<div class="section" id="card">
+					<div class="section-header">
+						<h2>Card</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.card</div>
+					<div class="card">
+						<div class="card">
+							<p class="fs-1 fg-muted m-0">A <span class="fg-accent">.card</span> is just a themed surface: background, border and a soft shadow.</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- ══ Checkbox ══ -->
+				<div class="section" id="checkbox">
+					<div class="section-header">
+						<h2>Checkbox</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.checkbox</div>
+					<div class="card flex-r flex-wrap gap-4">
+						<label class="checkbox"><input type="checkbox" checked> Checked</label>
+						<label class="checkbox"><input type="checkbox"> Unchecked</label>
+						<label class="checkbox"><input type="checkbox" disabled> Disabled</label>
+					</div>
+				</div>
+
+				<!-- ══ Radio ══ -->
+				<div class="section" id="radio">
+					<div class="section-header">
+						<h2>Radio</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.radio</div>
+					<div class="card flex-r flex-wrap gap-4">
+						<label class="radio"><input type="radio" name="demo-radio" checked> Option A</label>
+						<label class="radio"><input type="radio" name="demo-radio"> Option B</label>
+						<label class="radio"><input type="radio" name="demo-radio" disabled> Disabled</label>
+					</div>
+				</div>
+
+				<!-- ══ Toggle ══ -->
+				<div class="section" id="toggle">
+					<div class="section-header">
+						<h2>Toggle</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.toggle</div>
+					<div class="card flex-r flex-wrap gap-4">
+						<label class="toggle"><input type="checkbox" checked> Enabled</label>
+						<label class="toggle"><input type="checkbox"> Disabled state</label>
+						<label class="toggle"><input type="checkbox" disabled> Locked</label>
+					</div>
+					<p class="fg-muted fs-1 mt-3">This is the same component powering the light/dark switch in the header.</p>
+				</div>
+
+				<!-- ══ Chip ══ -->
+				<div class="section" id="chip-component">
+					<div class="section-header">
+						<h2>Chip</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.chip</div>
+					<div class="card flex-r flex-wrap gap-2">
+						<span class="chip">Default</span>
+						<span class="chip">Another chip</span>
+						<span class="chip">42</span>
+					</div>
+				</div>
+
+				<!-- ══ Expander ══ -->
+				<div class="section" id="expander">
+					<div class="section-header">
+						<h2>Expander</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">&lt;details class="expander"&gt;</div>
+					<div class="card">
+						<details class="expander">
+							<summary>Click to expand</summary>
+							<div class="expander-body fg-muted fs-1">Built on native <span class="fg-accent">&lt;details&gt;/&lt;summary&gt;</span> — no JS required.</div>
+						</details>
+					</div>
+				</div>
+
+				<!-- ══ Indicator ══ -->
+				<div class="section" id="indicator">
+					<div class="section-header">
+						<h2>Indicator</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.indicator .success .warn .danger .primary .accent .white .black</div>
+					<div class="card flex-r flex-wrap gap-3 align-items-center">
+						<span class="indicator">i</span>
+						<span class="indicator success">✓</span>
+						<span class="indicator warn">!</span>
+						<span class="indicator danger">✕</span>
+						<span class="indicator primary">P</span>
+						<span class="indicator accent">A</span>
+						<span class="indicator white">W</span>
+						<span class="indicator black">B</span>
+					</div>
+				</div>
+
+				<!-- ══ Input ══ -->
+				<div class="section" id="input">
+					<div class="section-header">
+						<h2>Input</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.input</div>
+					<div class="card flex-c gap-2">
+						<input class="input" placeholder="Text input">
+						<input class="input" placeholder="Disabled" disabled>
+						<textarea class="input" placeholder="Textarea, resizable vertically..."></textarea>
+					</div>
+					<div class="card mt-3">
+						<div class="sub-label">Color — <span class="chip">input[type="color"].input</span></div>
+						<div class="flex-r flex-wrap gap-3 align-items-center">
+							<input type="color" class="input" value="#4979de">
+							<input type="color" class="input" value="#2caec0">
+							<input type="color" class="input" value="#bf4f4f" disabled>
+							<span class="fg-muted fs-1">Same surface & radius treatment as text inputs</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- ══ Input Group ══ -->
+				<div class="section" id="input-group">
+					<div class="section-header">
+						<h2>Input Group</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.input-group</div>
+					<div class="card flex-c gap-2">
+						<div>
+							<div class="input-group">
+								<span class="ps-3 pe-1 flex-r align-items-center">$</span>
+								<input class="input" placeholder="Amount" type="number">
+								<button class="button info">Send</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- ══ Select ══ -->
+				<div class="section" id="select">
+					<div class="section-header">
+						<h2>Select</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.select</div>
+					<div class="card flex-r flex-wrap gap-3">
+						<div>
+							<select class="select">
+								<option>Option 1</option>
+								<option>Option 2</option>
+								<option>Option 3</option>
+							</select>
+						</div>
+						<select class="select" multiple size="4" style="min-width:140px">
+							<option selected>Alpha</option>
+							<option>Beta</option>
+							<option selected>Gamma</option>
+							<option>Delta</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- ══ Range ══ -->
+				<div class="section" id="range">
+					<div class="section-header">
+						<h2>Range</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.range</div>
+					<div class="card flex-c gap-3" style="max-width:320px">
+						<input type="range" class="range" min="0" max="100" value="40">
+						<input type="range" class="range" min="0" max="100" value="70" disabled>
+					</div>
+				</div>
+
+				<!-- ══ Table ══ -->
+				<div class="section" id="table">
+					<div class="section-header">
+						<h2>Table</h2><span class="section-id">components</span>
+					</div>
+					<div class="syntax">.table .striped .select</div>
+					<div class="card">
+						<table class="table">
+							<thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+							<tbody>
+								<tr><td>Jane Doe</td><td>Admin</td><td>Active</td></tr>
+								<tr><td>John Smith</td><td>Editor</td><td>Pending</td></tr>
+								<tr><td>Alex Kim</td><td>Viewer</td><td>Invited</td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="card mt-3">
+						<div class="sub-label">Striped rows — <span class="chip">.table.striped</span> darkens every other row</div>
+						<table class="table striped">
+							<thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+							<tbody>
+								<tr><td>Jane Doe</td><td>Admin</td><td>Active</td></tr>
+								<tr><td>John Smith</td><td>Editor</td><td>Pending</td></tr>
+								<tr><td>Alex Kim</td><td>Viewer</td><td>Invited</td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="card mt-3">
+						<div class="sub-label">Selectable rows — <span class="chip">.table.select</span> shows a pointer cursor per-row</div>
+						<table class="table select">
+							<thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+							<tbody>
+								<tr><td>Jane Doe</td><td>Admin</td><td>Active</td></tr>
+								<tr><td>John Smith</td><td>Editor</td><td>Pending</td></tr>
+								<tr><td>Alex Kim</td><td>Viewer</td><td>Invited</td></tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<h2 class="ms-5 mt-5 mb-0 ps-1">Utilities</h2>
+
 				<!-- ══ Misc ══ -->
 				<div class="section" id="misc">
 					<div class="section-header">
@@ -399,7 +618,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Center — <span class="chip">.center</span></div>
-						<div class="demo-card pos-rel" style="height:100px">
+						<div class="card pos-rel" style="height:100px">
 							<div class="center bg-primary fg-white br-2 p-2 fs-1">
 								.center
 							</div>
@@ -408,7 +627,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Clamp — <span class="chip">.clamp</span></div>
-						<div class="demo-card">
+						<div class="card">
 							<div class="clamp bg-primary p-2 br-2 fs-1 align-x">
 								.clamp — restricted to <span class="fg-accent">--theme-content-width</span>
 							</div>
@@ -417,7 +636,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Anchor — <span class="chip">.anchor-c</span> <span class="chip">.anchor-e</span> <span class="chip">.anchor-s</span></div>
-						<div class="demo-card pos-rel" style="height:110px">
+						<div class="card pos-rel" style="height:110px">
 							<div class="pos-abs anchor-s bg-info fg-white p-2 br-2 fs-1" style="left:50%; top:25%">.anchor-s</div>
 							<div class="pos-abs anchor-c bg-primary fg-white p-2 br-2 fs-1" style="left:50%; top:55%">.anchor-c</div>
 							<div class="pos-abs anchor-e bg-accent fg-white p-2 br-2 fs-1" style="left:50%; top:85%">.anchor-e</div>
@@ -433,7 +652,7 @@
 					</div>
 					<div class="syntax">.animate-[color|none|opacity|pos|trans]</div>
 					<p class="fg-muted fs-1 mb-3">Controlled by <span class="chip">--theme-animation</span>. Each variant limits which CSS properties transition.</p>
-					<div class="demo-card flex-c gap-2">
+					<div class="card flex-c gap-2">
 						<div class="flex-r align-items-center gap-3">
 							<span class="chip" style="width:140px;flex-shrink:0">.animate</span>
 							<div class="anim-track"><div class="anim-ball animate" id="a-all"></div></div>
@@ -470,7 +689,7 @@
 					<!-- Width -->
 					<div class="sub-section">
 						<div class="sub-label">Width — <span class="chip">.b[b|e|s|t]-[bp]-[0–5]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-center">
+						<div class="card flex-r flex-wrap gap-3 align-items-center">
 							<div class="b-0 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.b-0</div>
 							<div class="b-1 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.b-1</div>
 							<div class="b-2 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.b-2</div>
@@ -478,7 +697,7 @@
 							<div class="b-4 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.b-4</div>
 							<div class="b-5 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.b-5</div>
 						</div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-center">
+						<div class="card flex-r flex-wrap gap-3 align-items-center">
 							<div class="bt-3 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.bt-3</div>
 							<div class="bb-3 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.bb-3</div>
 							<div class="bs-3 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px">.bs-3</div>
@@ -489,7 +708,7 @@
 					<!-- Radius -->
 					<div class="sub-section">
 						<div class="sub-label">Radius — <span class="chip">.br-[0–5|circle|pill]</span> + corners <span class="chip">.brt- .brb- .brs- .bre-</span></div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-center">
+						<div class="card flex-r flex-wrap gap-3 align-items-center">
 							<div class="b-1 p-3 br-0 align-x fg-muted fs-1" style="min-width:70px;height:70px;display:flex;align-items:center;justify-content:center">.br-0</div>
 							<div class="b-1 p-3 br-1 align-x fg-muted fs-1" style="min-width:70px;height:70px;display:flex;align-items:center;justify-content:center">.br-1</div>
 							<div class="b-1 p-3 br-2 align-x fg-muted fs-1" style="min-width:70px;height:70px;display:flex;align-items:center;justify-content:center">.br-2</div>
@@ -499,7 +718,7 @@
 							<div class="b-1 p-3 br-pill align-x fg-muted fs-1" style="width:120px;height:44px;display:flex;align-items:center;justify-content:center">.br-pill</div>
 							<div class="b-1 br-circle align-x fg-muted fs-1" style="width:70px;height:70px;display:flex;align-items:center;justify-content:center">.br-circle</div>
 						</div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-center">
+						<div class="card flex-r flex-wrap gap-3 align-items-center">
 							<div class="b-1 p-3 brt-3 align-x fg-muted fs-1" style="min-width:80px;height:60px;display:flex;align-items:center;justify-content:center">.brt-3</div>
 							<div class="b-1 p-3 brb-3 align-x fg-muted fs-1" style="min-width:80px;height:60px;display:flex;align-items:center;justify-content:center">.brb-3</div>
 							<div class="b-1 p-3 brs-3 align-x fg-muted fs-1" style="min-width:80px;height:60px;display:flex;align-items:center;justify-content:center">.brs-3</div>
@@ -514,7 +733,7 @@
 					<!-- Style -->
 					<div class="sub-section">
 						<div class="sub-label">Style — <span class="chip">.b-[dash|dot|double|none|solid]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-3">
+						<div class="card flex-r flex-wrap gap-3">
 							<div class="b-2 b-dash  p-3 br-2 align-x fg-muted fs-1" style="min-width:90px">.b-dash</div>
 							<div class="b-2 b-dot   p-3 br-2 align-x fg-muted fs-1" style="min-width:90px">.b-dot</div>
 							<div class="b-3 b-double p-3 br-2 align-x fg-muted fs-1" style="min-width:90px">.b-double</div>
@@ -523,28 +742,28 @@
 						</div>
 					</div>
 
-					<!-- Border color -->
+					<!-- Border -->
 					<div class="sub-section">
-						<div class="sub-label">Color — <span class="chip">.b-[color]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-2">
-							<div class="b-2 b-primary   p-2 br-2 fs-1 fg-muted">.b-primary</div>
-							<div class="b-2 b-accent    p-2 br-2 fs-1 fg-muted">.b-accent</div>
-							<div class="b-2 b-info      p-2 br-2 fs-1 fg-muted">.b-info</div>
-							<div class="b-2 b-success   p-2 br-2 fs-1 fg-muted">.b-success</div>
-							<div class="b-2 b-warn      p-2 br-2 fs-1 fg-muted">.b-warn</div>
-							<div class="b-2 b-danger    p-2 br-2 fs-1 fg-muted">.b-danger</div>
-							<div class="b-2 b-muted     p-2 br-2 fs-1 fg-muted">.b-muted</div>
-							<div class="b-2 b-text      p-2 br-2 fs-1 fg-muted">.b-text</div>
-							<div class="b-2 b-surface   p-2 br-2 fs-1 fg-muted">.b-surface</div>
-							<div class="b-2 b-border    p-2 br-2 fs-1 fg-muted">.b-border</div>
-							<div class="b-2 b-background p-2 br-2 fs-1 fg-muted">.b-background</div>
-							<div class="b-2 b-background-contrast p-2 br-2 fs-1 fg-muted">.b-background-contrast</div>
-							<div class="b-2 b-primary-contrast p-2 br-2 fs-1 fg-muted">.b-primary-contrast</div>
-							<div class="b-2 b-accent-contrast  p-2 br-2 fs-1 fg-muted">.b-accent-contrast</div>
-							<div class="b-2 b-lighter   p-2 br-2 fs-1 fg-muted">.b-lighter</div>
-							<div class="b-2 b-darker    p-2 br-2 fs-1 fg-muted">.b-darker</div>
-							<div class="b-2 b-black     p-2 br-2 fs-1 fg-muted">.b-black</div>
-							<div class="b-2 b-white     p-2 br-2 fs-1 fg-muted">.b-white</div>
+						<div class="sub-label">Border — <span class="chip">.b-[color]</span></div>
+						<div class="card flex-c gap-2">
+							<div class="flex-r flex-wrap gap-2">
+								<div class="b-2 b-primary         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-primary</div>
+								<div class="b-2 b-primary-contrast p-2 br-2 fs-1 fg-muted align-x">.b-primary-contrast</div>
+								<div class="b-2 b-accent         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-accent</div>
+								<div class="b-2 b-accent-contrast p-2 br-2 fs-1 fg-muted align-x">.b-accent-contrast</div>
+								<div class="b-2 b-info         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-info</div>
+								<div class="b-2 b-success         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-success</div>
+								<div class="b-2 b-warn         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-warn</div>
+								<div class="b-2 b-danger         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-danger</div>
+								<div class="b-2 b-muted         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-muted</div>
+								<div class="b-2 b-surface         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-surface</div>
+								<div class="b-2 b-background         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-background</div>
+								<div class="b-2 b-background-contrast p-2 br-2 fs-1 fg-muted align-x">.b-background-contrast</div>
+								<div class="b-2 b-border         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-border</div>
+								<div class="b-2 b-text         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-text</div>
+								<div class="b-2 b-black         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-black</div>
+								<div class="b-2 b-white         p-2 br-2 fs-1 fg-muted align-x" style="width:160px">.b-white</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -558,87 +777,196 @@
 					<!-- Background -->
 					<div class="sub-section">
 						<div class="sub-label">Background — <span class="chip">.bg-[color]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-2">
-							<div class="bg-primary           p-2 br-2 fs-1 b-1">.bg-primary</div>
-							<div class="bg-primary-contrast  p-2 br-2 fs-1 b-1">.bg-primary-contrast</div>
-							<div class="bg-accent            p-2 br-2 fs-1 b-1">.bg-accent</div>
-							<div class="bg-accent-contrast   p-2 br-2 fs-1 b-1">.bg-accent-contrast</div>
-							<div class="bg-info              p-2 br-2 fs-1 b-1">.bg-info</div>
-							<div class="bg-success           p-2 br-2 fs-1 b-1">.bg-success</div>
-							<div class="bg-warn              p-2 br-2 fs-1 b-1">.bg-warn</div>
-							<div class="bg-danger            p-2 br-2 fs-1 b-1">.bg-danger</div>
-							<div class="bg-surface           p-2 br-2 fs-1 b-1">.bg-surface</div>
-							<div class="bg-background        p-2 br-2 fs-1 b-1">.bg-background</div>
-							<div class="bg-background-contrast p-2 br-2 fs-1 b-1">.bg-background-contrast</div>
-							<div class="bg-muted             p-2 br-2 fs-1 b-1">.bg-muted</div>
-							<div class="bg-text              p-2 br-2 fs-1 b-1">.bg-text</div>
-							<div class="bg-border            p-2 br-2 fs-1 b-1">.bg-border</div>
-							<div class="bg-lighter           p-2 br-2 fs-1 b-1">.bg-lighter</div>
-							<div class="bg-darker            p-2 br-2 fs-1 b-1">.bg-darker</div>
-							<div class="bg-black  fg-white   p-2 br-2 fs-1 b-1">.bg-black</div>
-							<div class="bg-white  fg-black   p-2 br-2 fs-1 b-1">.bg-white</div>
-							<div class="bg-transparent       p-2 br-2 fs-1 b-1">.bg-transparent</div>
-							<div class="bg-container         p-2 br-2 fs-1 b-1">.bg-container</div>
-						</div>
-
-						<div class="sub-label mt-3">Lighter / Darker variants — <span class="chip">.bg-[color]-lighter</span> <span class="chip">.bg-[color]-darker</span></div>
-						<div class="demo-card flex-r flex-wrap gap-2">
-							<div class="bg-primary-darker  p-2 br-2 fs-1 b-1 fg-text">.bg-primary-darker</div>
-							<div class="bg-primary         p-2 br-2 fs-1 b-1 fg-text">.bg-primary</div>
-							<div class="bg-primary-lighter p-2 br-2 fs-1 b-1 fg-text">.bg-primary-lighter</div>
-							<div class="bg-success-darker  p-2 br-2 fs-1 b-1 fg-text">.bg-success-darker</div>
-							<div class="bg-success         p-2 br-2 fs-1 b-1 fg-text">.bg-success</div>
-							<div class="bg-success-lighter p-2 br-2 fs-1 b-1 fg-text">.bg-success-lighter</div>
-							<div class="bg-danger-darker   p-2 br-2 fs-1 b-1 fg-text">.bg-danger-darker</div>
-							<div class="bg-danger          p-2 br-2 fs-1 b-1 fg-text">.bg-danger</div>
-							<div class="bg-danger-lighter  p-2 br-2 fs-1 b-1 fg-text">.bg-danger-lighter</div>
-							<div class="bg-warn-darker     p-2 br-2 fs-1 b-1 fg-text">.bg-warn-darker</div>
-							<div class="bg-warn            p-2 br-2 fs-1 b-1 fg-text">.bg-warn</div>
-							<div class="bg-warn-lighter    p-2 br-2 fs-1 b-1 fg-text">.bg-warn-lighter</div>
-							<div class="bg-accent-darker   p-2 br-2 fs-1 b-1 fg-text">.bg-accent-darker</div>
-							<div class="bg-accent          p-2 br-2 fs-1 b-1 fg-text">.bg-accent</div>
-							<div class="bg-accent-lighter  p-2 br-2 fs-1 b-1 fg-text">.bg-accent-lighter</div>
-							<div class="bg-info-darker     p-2 br-2 fs-1 b-1 fg-text">.bg-info-darker</div>
-							<div class="bg-info            p-2 br-2 fs-1 b-1 fg-text">.bg-info</div>
-							<div class="bg-info-lighter    p-2 br-2 fs-1 b-1 fg-text">.bg-info-lighter</div>
-							<div class="bg-muted-darker    p-2 br-2 fs-1 b-1 fg-text">.bg-muted-darker</div>
-							<div class="bg-muted           p-2 br-2 fs-1 b-1 fg-text">.bg-muted</div>
-							<div class="bg-muted-lighter   p-2 br-2 fs-1 b-1 fg-text">.bg-muted-lighter</div>
-							<div class="bg-surface-darker  p-2 br-2 fs-1 b-1 fg-text">.bg-surface-darker</div>
-							<div class="bg-surface         p-2 br-2 fs-1 b-1 fg-text">.bg-surface</div>
-							<div class="bg-surface-lighter p-2 br-2 fs-1 b-1 fg-text">.bg-surface-lighter</div>
+						<div class="card flex-c gap-2">
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">primary</span>
+								<div class="bg-primary-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-primary-darker</div>
+								<div class="bg-primary         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-primary</div>
+								<div class="bg-primary-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-primary-lighter</div>
+								<div class="bg-primary-contrast p-2 br-2 fs-1 b-1 fg-text align-x">.bg-primary-contrast</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">accent</span>
+								<div class="bg-accent-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-accent-darker</div>
+								<div class="bg-accent         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-accent</div>
+								<div class="bg-accent-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-accent-lighter</div>
+								<div class="bg-accent-contrast p-2 br-2 fs-1 b-1 fg-text align-x">.bg-accent-contrast</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">info</span>
+								<div class="bg-info-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-info-darker</div>
+								<div class="bg-info         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-info</div>
+								<div class="bg-info-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-info-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">success</span>
+								<div class="bg-success-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-success-darker</div>
+								<div class="bg-success         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-success</div>
+								<div class="bg-success-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-success-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">warn</span>
+								<div class="bg-warn-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-warn-darker</div>
+								<div class="bg-warn         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-warn</div>
+								<div class="bg-warn-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-warn-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">danger</span>
+								<div class="bg-danger-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-danger-darker</div>
+								<div class="bg-danger         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-danger</div>
+								<div class="bg-danger-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-danger-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">muted</span>
+								<div class="bg-muted-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-muted-darker</div>
+								<div class="bg-muted         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-muted</div>
+								<div class="bg-muted-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-muted-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">surface</span>
+								<div class="bg-surface-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-surface-darker</div>
+								<div class="bg-surface         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-surface</div>
+								<div class="bg-surface-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-surface-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">background</span>
+								<div class="bg-background-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-background-darker</div>
+								<div class="bg-background         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-background</div>
+								<div class="bg-background-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-background-lighter</div>
+								<div class="bg-background-contrast p-2 br-2 fs-1 b-1 fg-background align-x">.bg-background-contrast</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">border</span>
+								<div class="bg-border-darker  p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-border-darker</div>
+								<div class="bg-border         p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-border</div>
+								<div class="bg-border-lighter p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-border-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">text</span>
+								<div class="bg-text-darker  p-2 br-2 fs-1 b-1 fg-background align-x" style="width:160px">.bg-text-darker</div>
+								<div class="bg-text         p-2 br-2 fs-1 b-1 fg-background align-x" style="width:160px">.bg-text</div>
+								<div class="bg-text-lighter p-2 br-2 fs-1 b-1 fg-background align-x" style="width:160px">.bg-text-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">black</span>
+								<div class="bg-black-darker  p-2 br-2 fs-1 b-1 fg-white align-x" style="width:160px">.bg-black-darker</div>
+								<div class="bg-black         p-2 br-2 fs-1 b-1 fg-white align-x" style="width:160px">.bg-black</div>
+								<div class="bg-black-lighter p-2 br-2 fs-1 b-1 fg-white align-x" style="width:160px">.bg-black-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">white</span>
+								<div class="bg-white-darker  p-2 br-2 fs-1 b-1 fg-black align-x" style="width:160px">.bg-white-darker</div>
+								<div class="bg-white         p-2 br-2 fs-1 b-1 fg-black align-x" style="width:160px">.bg-white</div>
+								<div class="bg-white-lighter p-2 br-2 fs-1 b-1 fg-black align-x" style="width:160px">.bg-white-lighter</div>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">Transparency</span>
+								<div class="bg-shade       p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-shade</div>
+								<div class="bg-shade-alt   p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-shade-alt</div>
+								<div class="bg-lighter     p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-lighter</div>
+								<div class="bg-darker      p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-darker</div>
+								<div class="bg-transparent p-2 br-2 fs-1 b-1 fg-text align-x" style="width:160px">.bg-transparent</div>
+							</div>
 						</div>
 					</div>
 
 					<!-- Foreground -->
 					<div class="sub-section">
 						<div class="sub-label">Foreground — <span class="chip">.fg-[color]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-2">
-							<span class="fg-primary            b-1 p-2 br-2 fs-1">.fg-primary</span>
-							<span class="fg-primary-contrast   b-1 p-2 br-2 fs-1">.fg-primary-contrast</span>
-							<span class="fg-accent             b-1 p-2 br-2 fs-1">.fg-accent</span>
-							<span class="fg-accent-contrast    b-1 p-2 br-2 fs-1">.fg-accent-contrast</span>
-							<span class="fg-info               b-1 p-2 br-2 fs-1">.fg-info</span>
-							<span class="fg-success            b-1 p-2 br-2 fs-1">.fg-success</span>
-							<span class="fg-warn               b-1 p-2 br-2 fs-1">.fg-warn</span>
-							<span class="fg-danger             b-1 p-2 br-2 fs-1">.fg-danger</span>
-							<span class="fg-muted              b-1 p-2 br-2 fs-1">.fg-muted</span>
-							<span class="fg-text               b-1 p-2 br-2 fs-1">.fg-text</span>
-							<span class="fg-surface            b-1 p-2 br-2 fs-1">.fg-surface</span>
-							<span class="fg-border             b-1 p-2 br-2 fs-1">.fg-border</span>
-							<span class="fg-background         b-1 p-2 br-2 fs-1">.fg-background</span>
-							<span class="fg-background-contrast b-1 p-2 br-2 fs-1">.fg-background-contrast</span>
-							<span class="fg-lighter            b-1 p-2 br-2 fs-1">.fg-lighter</span>
-							<span class="fg-darker             b-1 p-2 br-2 fs-1">.fg-darker</span>
-							<span class="fg-black              b-1 p-2 br-2 fs-1">.fg-black</span>
-							<span class="fg-white              b-1 p-2 br-2 fs-1">.fg-white</span>
+						<div class="card flex-c gap-2">
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">primary</span>
+								<span class="fg-primary-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-primary-darker</span>
+								<span class="fg-primary         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-primary</span>
+								<span class="fg-primary-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-primary-lighter</span>
+								<span class="fg-primary-contrast p-2 br-2 fs-1 b-1 align-x">.fg-primary-contrast</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">accent</span>
+								<span class="fg-accent-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-accent-darker</span>
+								<span class="fg-accent         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-accent</span>
+								<span class="fg-accent-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-accent-lighter</span>
+								<span class="fg-accent-contrast p-2 br-2 fs-1 b-1 align-x">.fg-accent-contrast</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">info</span>
+								<span class="fg-info-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-info-darker</span>
+								<span class="fg-info         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-info</span>
+								<span class="fg-info-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-info-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">success</span>
+								<span class="fg-success-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-success-darker</span>
+								<span class="fg-success         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-success</span>
+								<span class="fg-success-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-success-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">warn</span>
+								<span class="fg-warn-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-warn-darker</span>
+								<span class="fg-warn         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-warn</span>
+								<span class="fg-warn-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-warn-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">danger</span>
+								<span class="fg-danger-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-danger-darker</span>
+								<span class="fg-danger         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-danger</span>
+								<span class="fg-danger-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-danger-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">muted</span>
+								<span class="fg-muted-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-muted-darker</span>
+								<span class="fg-muted         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-muted</span>
+								<span class="fg-muted-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-muted-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">surface</span>
+								<span class="fg-surface-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-surface-darker</span>
+								<span class="fg-surface         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-surface</span>
+								<span class="fg-surface-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-surface-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">background</span>
+								<span class="fg-background-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-background-darker</span>
+								<span class="fg-background         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-background</span>
+								<span class="fg-background-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-background-lighter</span>
+								<span class="fg-background-contrast p-2 br-2 fs-1 b-1 align-x">.fg-background-contrast</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">border</span>
+								<span class="fg-border-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-border-darker</span>
+								<span class="fg-border         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-border</span>
+								<span class="fg-border-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-border-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">text</span>
+								<span class="fg-text-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-text-darker</span>
+								<span class="fg-text         p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-text</span>
+								<span class="fg-text-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-text-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">black</span>
+								<span class="fg-black-darker  bg-white p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-black-darker</span>
+								<span class="fg-black         bg-white p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-black</span>
+								<span class="fg-black-lighter bg-white p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-black-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">white</span>
+								<span class="fg-white-darker  bg-black p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-white-darker</span>
+								<span class="fg-white         bg-black p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-white</span>
+								<span class="fg-white-lighter bg-black p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-white-lighter</span>
+							</div>
+							<div class="flex-r gap-2 align-items-center">
+								<span class="fg-muted fs-1" style="width:100px;flex-shrink:0">Transparency</span>
+								<span class="fg-lighter p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-lighter</span>
+								<span class="fg-darker  p-2 br-2 fs-1 b-1 align-x" style="width:160px">.fg-darker</span>
+							</div>
 						</div>
 					</div>
 
 					<!-- Alignment -->
 					<div class="sub-section">
 						<div class="sub-label">Alignment — <span class="chip">.align-x[-start|-end]</span> <span class="chip">.align-y[-start|-end]</span></div>
-						<div class="demo-card">
+						<div class="card">
 							<div class="b-1 br-2 p-2 mb-2 align-x-start fs-1 fg-muted">.align-x-start</div>
 							<div class="b-1 br-2 p-2 mb-2 align-x       fs-1 fg-muted">.align-x (center)</div>
 							<div class="b-1 br-2 p-2 mb-2 align-x-end   fs-1 fg-muted">.align-x-end</div>
@@ -653,13 +981,83 @@
 					</div>
 				</div>
 
+				<!-- ══ Glow ══ -->
+				<div class="section" id="glow">
+					<div class="section-header">
+						<h2>Glow</h2><span class="section-id">utility</span>
+					</div>
+					<div class="syntax">.bg-glow-[primary|accent][-sm|-lg]</div>
+					<p class="fg-muted fs-1 mb-3">A soft radial gradient anchored to the top-left corner — it's a plain background-image, so it layers behind any content. This page's own hero header uses <span class="fg-accent">.bg-glow-primary</span>.</p>
+					<div class="card flex-r flex-wrap gap-3">
+						<div class="bg-glow-primary-sm bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-primary-sm</span>
+						</div>
+						<div class="bg-glow-primary bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-primary</span>
+						</div>
+						<div class="bg-glow-primary-lg bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-primary-lg</span>
+						</div>
+
+						<div class="bg-glow-accent-sm bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-accent-sm</span>
+						</div>
+						<div class="bg-glow-accent bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-accent</span>
+						</div>
+						<div class="bg-glow-accent-lg bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-accent-lg</span>
+						</div>
+
+						<div class="bg-glow-info-sm bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-info-sm</span>
+						</div>
+						<div class="bg-glow-info bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-info</span>
+						</div>
+						<div class="bg-glow-info-lg bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-info-lg</span>
+						</div>
+
+						<div class="bg-glow-success-sm bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-success-sm</span>
+						</div>
+						<div class="bg-glow-success bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-success</span>
+						</div>
+						<div class="bg-glow-success-lg bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-success-lg</span>
+						</div>
+
+						<div class="bg-glow-warn-sm bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-warn-sm</span>
+						</div>
+						<div class="bg-glow-warn bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-warn</span>
+						</div>
+						<div class="bg-glow-warn-lg bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-warn-lg</span>
+						</div>
+
+						<div class="bg-glow-danger-sm bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-danger-sm</span>
+						</div>
+						<div class="bg-glow-danger bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-danger</span>
+						</div>
+						<div class="bg-glow-danger-lg bg-surface b-1 br-2 p-3" style="width:180px;height:120px">
+							<span class="fs-1 fg-muted">.bg-glow-danger-lg</span>
+						</div>
+					</div>
+				</div>
+
 				<!-- ══ Cursors ══ -->
 				<div class="section" id="cursors">
 					<div class="section-header">
 						<h2>Cursors</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.curs-[alias|auto|cell|col-resize|copy|crosshair|default|grab|grabbing|help|move|not-allowed|pointer|progress|row-resize|text|none|wait|vertical-text|zoom-in|zoom-out]</div>
-					<div class="demo-card flex-r flex-wrap gap-2">
+					<div class="card flex-r flex-wrap gap-2">
 						<div class="curs-alias        b-1 p-2 br-2 fs-1 fg-muted">.curs-alias</div>
 						<div class="curs-auto         b-1 p-2 br-2 fs-1 fg-muted">.curs-auto</div>
 						<div class="curs-cell         b-1 p-2 br-2 fs-1 fg-muted">.curs-cell</div>
@@ -690,7 +1088,7 @@
 						<h2>Display</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.d-[bp]-[block|inline|inline-block|flex|inline-flex|grid|inline-grid|table|table-row|table-cell|none]</div>
-					<div class="demo-card flex-r flex-wrap gap-2">
+					<div class="card flex-r flex-wrap gap-2">
 						<span class="chip">.d-block</span>
 						<span class="chip">.d-inline</span>
 						<span class="chip">.d-inline-block</span>
@@ -705,7 +1103,7 @@
 						<span class="chip">.d-md-none</span>
 						<span class="chip">.d-lg-flex</span>
 					</div>
-					<div class="demo-card flex-r flex-wrap gap-2 align-items-center">
+					<div class="card flex-r flex-wrap gap-2 align-items-center">
 						<div class="d-inline-block bg-primary fg-white p-2 br-2 fs-1">.d-inline-block</div>
 						<div class="d-inline bg-info fg-white p-2 fs-1">.d-inline</div>
 						<div class="b-dash"  style="height: 32px; width: 75px;">
@@ -723,7 +1121,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Direction — <span class="chip">.flex-[bp]-[c|cr|r|rr]</span> <span class="chip">.flex-inline-[bp]-[c|cr|r|rr]</span></div>
-						<div class="demo-card flex-r gap-3 flex-wrap">
+						<div class="card flex-r gap-3 flex-wrap">
 							<div class="flex-c gap-1 b-1 p-3 br-2" style="flex:1;min-width:120px">
 								<span class="fg-muted fs-1 mb-2">.flex-c</span>
 								<div class="bg-primary fg-white p-1 br-1 align-x fs-1">1</div>
@@ -753,7 +1151,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Justify — <span class="chip">.justify-[bp]-[start|center|end|between|around|evenly]</span></div>
-						<div class="demo-card flex-c gap-2">
+						<div class="card flex-c gap-2">
 							<div class="flex-r gap-3 align-items-center">
 								<div class="fg-muted" style="width: 125px">.justify-start</div>
 								<div class="flex-fill flex-r justify-start   gap-1 bg-darker p-2 br-2"><div class="bg-primary p-1 br-1 fs-1 fg-white">A</div><div class="bg-primary p-1 br-1 fs-1 fg-white">B</div><div class="bg-primary p-1 br-1 fs-1 fg-white">C</div></div>
@@ -782,8 +1180,40 @@
 					</div>
 
 					<div class="sub-section">
-						<div class="sub-label">Align Items / Self / Content</div>
-						<div class="demo-card flex-r gap-2 b-1" style="height:90px">
+						<div class="sub-label">Align Content — <span class="chip">.align-content-[bp]-[start|end|center|baseline|stretch]</span></div>
+						<div class="card flex-r flex-wrap gap-3">
+							<div class="flex-c align-items-center gap-1">
+								<div class="flex-r flex-wrap align-content-start gap-1 bg-darker b-1 br-2" style="width:110px;height:110px"><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">A</div><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">B</div></div>
+								<span class="fs-1 fg-muted">.align-content-start</span>
+							</div>
+							<div class="flex-c align-items-center gap-1">
+								<div class="flex-r flex-wrap align-content-center gap-1 bg-darker b-1 br-2" style="width:110px;height:110px"><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">A</div><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">B</div></div>
+								<span class="fs-1 fg-muted">.align-content-center</span>
+							</div>
+							<div class="flex-c align-items-center gap-1">
+								<div class="flex-r flex-wrap align-content-end gap-1 bg-darker b-1 br-2" style="width:110px;height:110px"><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">A</div><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">B</div></div>
+								<span class="fs-1 fg-muted">.align-content-end</span>
+							</div>
+							<div class="flex-c align-items-center gap-1">
+								<div class="flex-r flex-wrap align-content-stretch gap-1 bg-darker b-1 br-2" style="width:110px;height:110px"><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">A</div><div class="bg-primary p-1 br-1 fs-1 fg-white" style="width:40px">B</div></div>
+								<span class="fs-1 fg-muted">.align-content-stretch</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="sub-section">
+						<div class="sub-label">Align Items — <span class="chip">.align-items-[bp]-[start|end|center|baseline|stretch]</span></div>
+						<div class="card flex-r gap-2 b-1" style="height:90px">
+							<div class="flex-r align-items-start  gap-1" style="height:100%"><div class="bg-primary fg-white p-1 br-1 fs-1">.align-items-start</div></div>
+							<div class="flex-r align-items-center gap-1" style="height:100%"><div class="bg-accent  fg-white p-1 br-1 fs-1">.align-items-center</div></div>
+							<div class="flex-r align-items-end    gap-1" style="height:100%"><div class="bg-info    fg-white p-1 br-1 fs-1">.align-items-end</div></div>
+							<div class="flex-r align-items-stretch gap-1" style="height:100%"><div class="bg-success fg-white p-1 br-1 fs-1 flex-r align-items-center">.align-items-stretch</div></div>
+						</div>
+					</div>
+
+					<div class="sub-section">
+						<div class="sub-label">Align Self — <span class="chip">.align-self-[bp]-[start|end|center|baseline|stretch]</span></div>
+						<div class="card flex-r gap-2 b-1" style="height:90px">
 							<div class="align-self-start  bg-primary fg-white p-1 br-1 fs-1">.align-self-[bp]-start</div>
 							<div class="align-self-center bg-accent  fg-white p-1 br-1 fs-1">.align-self-[bp]-center</div>
 							<div class="align-self-end    bg-info    fg-white p-1 br-1 fs-1">.align-self-[bp]-end</div>
@@ -793,7 +1223,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Grow / Shrink / Fill</div>
-						<div class="demo-card flex-c gap-2">
+						<div class="card flex-c gap-2">
 							<div class="flex-r gap-2">
 								<div class="flex-grow-1 bg-primary fg-white p-2 br-2 fs-1 align-x">.flex-[bp]-grow-1</div>
 								<div class="flex-grow-2 bg-accent  fg-white p-2 br-2 fs-1 align-x">.flex-[bp]-grow-2</div>
@@ -814,7 +1244,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Wrap</div>
-						<div class="demo-card flex-r gap-3">
+						<div class="card flex-r gap-3">
 							<div style="flex:1">
 								<div class="fg-muted fs-1 mb-2">.flex-[bp]-nowrap</div>
 								<div class="flex-r flex-nowrap gap-1 bg-darker p-2 br-2 overflow-hidden">
@@ -836,7 +1266,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Order — <span class="chip">.order-[bp]-[0–5]</span></div>
-						<div class="demo-card flex-r gap-2">
+						<div class="card flex-r gap-2">
 							<div class="order-5 bg-danger  fg-white p-2 br-2 fs-1">#1 / .order-5</div>
 							<div class="order-1 bg-success fg-white p-2 br-2 fs-1">#2 / .order-1</div>
 							<div class="order-3 bg-warn    fg-white p-2 br-2 fs-1">#3 / .order-3</div>
@@ -846,7 +1276,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Gap — <span class="chip">.gap-[bp]-[0–5]</span></div>
-						<div class="demo-card flex-c gap-2">
+						<div class="card flex-c gap-2">
 							<div class="flex-r gap-3 bg-darker p-2 br-2 align-items-center">
 								<span class="fg-muted fs-1">.gap-0</span>
 								<div class="flex-r gap-0">
@@ -893,7 +1323,7 @@
 						<h2>Float</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.float-[bp]-[start|end|none]</div>
-					<div class="demo-card overflow-hidden">
+					<div class="card overflow-hidden">
 						<div class="float-end bg-info fg-white p-2 br-2 fs-1 ms-3">.float-end</div>
 						<div class="float-start bg-primary fg-white p-2 br-2 fs-1 me-3">.float-start</div>
 						<div class="fg-muted fs-1 p-2">.float-none — stays in flow</div>
@@ -908,7 +1338,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Size — <span class="chip">.fs-[1–7]</span></div>
-						<div class="demo-card flex-c gap-1">
+						<div class="card flex-c gap-1">
 							<span class="fs-1 fg-text">.fs-1 — 1rem</span>
 							<span class="fs-2 fg-text">.fs-2 — 1.25rem</span>
 							<span class="fs-3 fg-text">.fs-3 — 1.5rem</span>
@@ -921,7 +1351,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Weight</div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-baseline">
+						<div class="card flex-r flex-wrap gap-3 align-items-baseline">
 							<span class="fs-lighter fg-text fs-3">.fs-lighter</span>
 							<span class="fs-normal  fg-text fs-3">.fs-normal</span>
 							<span class="fs-bold    fg-text fs-3">.fs-bold</span>
@@ -931,7 +1361,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Style & Decoration</div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-baseline">
+						<div class="card flex-r flex-wrap gap-3 align-items-baseline">
 							<span class="fs-italic    fg-text fs-2">.fs-italic</span>
 							<span class="fs-norm      fg-text fs-2">.fs-norm (normal)</span>
 							<span class="fs-underline fg-text fs-2">.fs-underline</span>
@@ -943,7 +1373,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Transform</div>
-						<div class="demo-card flex-r flex-wrap gap-3 align-items-baseline">
+						<div class="card flex-r flex-wrap gap-3 align-items-baseline">
 							<span class="fs-lowercase  fg-text fs-2">.fs-lowercase EXAMPLE</span>
 							<span class="fs-uppercase  fg-text fs-2">.fs-uppercase example</span>
 							<span class="fs-capitalize fg-text fs-2">.fs-capitalize example text</span>
@@ -952,7 +1382,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Wrapping</div>
-						<div class="demo-card flex-c gap-3">
+						<div class="card flex-c gap-3">
 							<div class="flex-r gap-3 align-items-start">
 								<span class="chip" style="flex-shrink:0;width:110px">.fs-truncate</span>
 								<div class="fs-truncate fg-muted fs-1" style="max-width:340px">Lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat</div>
@@ -979,7 +1409,7 @@
 						<h2>Hover</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.hover &nbsp; .curs-hover</div>
-					<div class="demo-card flex-r gap-3 flex-wrap">
+					<div class="card flex-r gap-3 flex-wrap">
 						<div class="hover      bg-primary fg-white p-3 br-2 fs-1 curs-pointer flex-fill-even align-x">.hover — hover me (brightness)</div>
 						<div class="curs-hover bg-accent  fg-white p-3 br-2 fs-1 flex-fill-even align-x">.curs-hover — pointer + brightness</div>
 					</div>
@@ -991,7 +1421,7 @@
 						<h2>Object Fit</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.fit-[bp]-[contain|cover|fill|scale|none]</div>
-					<div class="demo-card flex-r gap-3 flex-wrap">
+					<div class="card flex-r gap-3 flex-wrap">
 						<div class="flex-c align-items-center gap-2">
 							<div class="b-1 br-2 overflow-hidden" style="width:200px;height:160px">
 								<img src="./wave.webp" alt="wave" class="w-100 h-100 fit-contain">
@@ -1031,7 +1461,7 @@
 						<h2>Opacity</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.o-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100]</div>
-					<div class="demo-card flex-r flex-wrap gap-2 align-items-center">
+					<div class="card flex-r flex-wrap gap-2 align-items-center">
 						<div class="o-0   bg-primary p-2 br-2 fs-1 fg-white align-x" style="min-width:44px">0</div>
 						<div class="o-10  bg-primary p-2 br-2 fs-1 fg-white align-x" style="min-width:44px">10</div>
 						<div class="o-20  bg-primary p-2 br-2 fs-1 fg-white align-x" style="min-width:44px">20</div>
@@ -1057,7 +1487,7 @@
 						<h2>Overflow</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.overflow-[x|y]-[auto|hidden|scroll|visible]</div>
-					<div class="demo-card flex-r flex-wrap gap-3">
+					<div class="card flex-r flex-wrap gap-3">
 						<div class="flex-c align-items-center gap-2">
 							<div class="overflow-auto b-1 br-2" style="width:130px;height:100px">
 								<div class="bg-primary-darker p-2 align-x fg-muted fs-1" style="width:220px;height:160px">.overflow-auto</div>
@@ -1099,7 +1529,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Type — <span class="chip">.pos-[abs|fix|rel|static|stick]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-2">
+						<div class="card flex-r flex-wrap gap-2">
 							<span class="chip">.pos-abs (absolute)</span>
 							<span class="chip">.pos-fix (fixed)</span>
 							<span class="chip">.pos-rel (relative)</span>
@@ -1110,7 +1540,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Coordinates — <span class="chip">.[top|bottom|start|end]-[0–100]</span></div>
-						<div class="demo-card pos-rel b-1 br-2" style="height:150px">
+						<div class="card pos-rel b-1 br-2" style="height:150px">
 							<div class="pos-abs top-0  start-0  bg-primary fg-white p-1 br-1 fs-1">.top-0 .start-0</div>
 							<div class="pos-abs top-0  end-0    bg-accent  fg-white p-1 br-1 fs-1">.top-0 .end-0</div>
 							<div class="center         bg-info   fg-white p-1 br-1 fs-1">.center</div>
@@ -1121,7 +1551,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Anchor — <span class="chip">.anchor-[c|e|s]</span></div>
-						<div class="demo-card pos-rel b-primary" style="height: 100px">
+						<div class="card pos-rel b-primary" style="height: 100px">
 							<div class="pos-abs anchor-s bg-primary fg-white p-1 br-1 fs-1" style="left:50%;top:20%">.anchor-s</div>
 							<div class="pos-abs anchor-c bg-accent  fg-white p-1 br-1 fs-1" style="left:50%;top:50%">.anchor-c</div>
 							<div class="pos-abs anchor-e bg-info    fg-white p-1 br-1 fs-1" style="left:50%;top:80%">.anchor-e</div>
@@ -1137,7 +1567,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Elevation — <span class="chip">.shadow</span> <span class="chip">.shadow-[1–5]</span> <span class="chip">.shadow-none</span></div>
-						<div class="demo-card flex-r flex-wrap gap-4 align-items-end">
+						<div class="card flex-r flex-wrap gap-4 align-items-end">
 							<div class="shadow-1 bg-surface p-4 br-2 flex-c align-items-center gap-2">
 								<div class="bg-border br-2 p-3" style="width:40px;height:40px"></div>
 								<span class="fs-1 fg-muted">.shadow-1</span>
@@ -1172,7 +1602,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Directional — <span class="chip">.shadow-[top|bottom|start|end]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-4">
+						<div class="card flex-r flex-wrap gap-4">
 							<div class="shadow-top    bg-surface p-4 br-2 flex-c align-items-center gap-2"><span class="fs-1 fg-muted">.shadow-top</span></div>
 							<div class="shadow-bottom bg-surface p-4 br-2 flex-c align-items-center gap-2"><span class="fs-1 fg-muted">.shadow-bottom</span></div>
 							<div class="shadow-start  bg-surface p-4 br-2 flex-c align-items-center gap-2"><span class="fs-1 fg-muted">.shadow-start</span></div>
@@ -1182,7 +1612,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Colored — <span class="chip">.shadow-[primary|accent|info|success|warn|danger]</span></div>
-						<div class="demo-card flex-r flex-wrap gap-4">
+						<div class="card flex-r flex-wrap gap-4">
 							<div class="shadow-primary bg-surface p-4 br-2 flex-c align-items-center gap-2">
 								<div class="bg-primary p-2 br-2" style="width:36px;height:36px"></div>
 								<span class="fs-1 fg-primary">.shadow-primary</span>
@@ -1212,7 +1642,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Inset — <span class="chip">.shadow-inset-[1|2]</span></div>
-						<div class="demo-card flex-r gap-4">
+						<div class="card flex-r gap-4">
 							<div class="shadow-inset-1 bg-surface b-1 p-4 br-2 flex-c align-items-center gap-2"><span class="fs-1 fg-muted">.shadow-inset-1</span></div>
 							<div class="shadow-inset-2 bg-surface b-1 p-4 br-2 flex-c align-items-center gap-2"><span class="fs-1 fg-muted">.shadow-inset-2</span></div>
 						</div>
@@ -1220,7 +1650,7 @@
 
 					<div class="sub-section">
 						<div class="sub-label">Drop (filter-based, respects SVG/PNG shape) — <span class="chip">.shadow-drop-sm</span> <span class="chip">.shadow-drop</span> <span class="chip">.shadow-drop-lg</span></div>
-						<div class="demo-card">
+						<div class="card">
 							<p class="fg-muted fs-1 mb-3">Unlike <span class="fg-accent">box-shadow</span>, filter drop-shadow respects transparency</p>
 							<div class="flex-r gap-5 align-items-center">
 								<div class="flex-c align-items-center gap-2">
@@ -1247,12 +1677,12 @@
 				</div>
 
 				<!-- ══ User Select ══ -->
-				<div class="section" id="select">
+				<div class="section" id="user-select">
 					<div class="section-header">
 						<h2>User Select</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.select-[all|auto|none|text]</div>
-					<div class="demo-card flex-r flex-wrap gap-3">
+					<div class="card flex-r flex-wrap gap-3">
 						<div class="select-all  b-1 p-3 br-2 fg-muted fs-1">.select-all — click to select all</div>
 						<div class="select-auto b-1 p-3 br-2 fg-muted fs-1">.select-auto — default behavior</div>
 						<div class="select-none b-1 p-3 br-2 fg-muted fs-1">.select-none — cannot select this</div>
@@ -1267,13 +1697,13 @@
 					</div>
 					<div class="syntax">.w-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100|auto]</div>
 					<div class="syntax">.h-[0|10|20|25|30|33|34|40|50|60|66|70|75|80|90|100|auto]</div>
-					<div class="demo-card flex-c gap-1">
+					<div class="card flex-c gap-1">
 						<div class="w-25 bg-primary p-1 br-1 fg-white fs-1">.w-25</div>
 						<div class="w-50 bg-accent p-1 br-1 fg-white fs-1">.w-50</div>
 						<div class="w-75 bg-info p-1 br-1 fg-white fs-1">.w-75</div>
 						<div class="w-100 bg-success p-1 br-1 fg-white fs-1">.w-100</div>
 					</div>
-					<div class="demo-card flex-r gap-2 align-items-end" style="height:160px">
+					<div class="card flex-r gap-2 align-items-end" style="height:160px">
 						<div class="h-25  bg-primary br-1 fg-white fs-1 align-x p-1" style="width:60px">.h-25</div>
 						<div class="h-50  bg-accent  br-1 fg-white fs-1 align-x p-1" style="width:60px">.h-50</div>
 						<div class="h-75  bg-info    br-1 fg-white fs-1 align-x p-1" style="width:60px">.h-75</div>
@@ -1288,7 +1718,7 @@
 					</div>
 					<div class="syntax">Margin: .m[b|e|s|t|x|y]-[bp]-[0–5|auto]</div>
 					<div class="syntax">Padding: .p[b|e|s|t|x|y]-[bp]-[0–5]</div>
-					<div class="demo-card flex-c flex-wrap gap-1 align-items-start mt-3">
+					<div class="card flex-c flex-wrap gap-1 align-items-start mt-3">
 						<div class="flex-r flex-wrap gap-2">
 							<div class="bg-warn b-1 b-warn w-100"><div class="bg-success mx-auto p-2 b-1 b-success fg-white fs-1 align-x" style="width:120px">.mx-auto</div></div>
 							<div>
@@ -1311,12 +1741,12 @@
 							</div>
 						</div>
 						<div class="flex-r flex-wrap gap-1 align-items-center">
-							<div class="bg-warn m-0 b-1 b-warn"><div class="bg-success p-0 b-1 b-success fg-white fs-1">.m-0 .p-0</div></div>
-							<div class="bg-warn m-1 b-1 b-warn"><div class="bg-success p-1 b-1 b-success fg-white fs-1">.m-1 .p-1</div></div>
-							<div class="bg-warn m-2 b-1 b-warn"><div class="bg-success p-2 b-1 b-success fg-white fs-1">.m-2 .p-2</div></div>
-							<div class="bg-warn m-3 b-1 b-warn"><div class="bg-success p-3 b-1 b-success fg-white fs-1">.m-3 .p-3</div></div>
-							<div class="bg-warn m-4 b-1 b-warn"><div class="bg-success p-4 b-1 b-success fg-white fs-1">.m-4 .p-4</div></div>
-							<div class="bg-warn m-5 b-1 b-warn"><div class="bg-success p-5 b-1 b-success fg-white fs-1">.m-5 .p-5</div></div>
+							<div class="bg-warn p-0 b-1 b-warn"><div class="bg-success p-0 b-1 b-success fg-white fs-1">.m-0 .p-0</div></div>
+							<div class="bg-warn p-1 b-1 b-warn"><div class="bg-success p-1 b-1 b-success fg-white fs-1">.m-1 .p-1</div></div>
+							<div class="bg-warn p-2 b-1 b-warn"><div class="bg-success p-2 b-1 b-success fg-white fs-1">.m-2 .p-2</div></div>
+							<div class="bg-warn p-3 b-1 b-warn"><div class="bg-success p-3 b-1 b-success fg-white fs-1">.m-3 .p-3</div></div>
+							<div class="bg-warn p-4 b-1 b-warn"><div class="bg-success p-4 b-1 b-success fg-white fs-1">.m-4 .p-4</div></div>
+							<div class="bg-warn p-5 b-1 b-warn"><div class="bg-success p-5 b-1 b-success fg-white fs-1">.m-5 .p-5</div></div>
 						</div>
 					</div>
 				</div>
@@ -1327,7 +1757,7 @@
 						<h2>Visibility</h2><span class="section-id">utility</span>
 					</div>
 					<div class="syntax">.[hidden|visible]-[bp]</div>
-					<div class="demo-card">
+					<div class="card">
 						<p class="fg-muted fs-1 mb-3"><span class="fg-accent">.hidden</span> preserves layout space. Use <span class="fg-accent">.d-none</span> to remove from flow entirely.</p>
 						<div class="flex-r gap-3 align-items-center">
 							<div class="b-dash mb-2">
@@ -1359,25 +1789,26 @@
 		</div>
 
 		<script>
-			// ── Theme ──
-			const root = document.getElementById('root');
-			const toggle = document.getElementById('themeToggle');
+			// ── Theme (dark/light) ──
+			const toggleInput = document.getElementById('themeToggleInput');
 			let dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 			function applyTheme() {
-				document.body.classList.toggle('theme-dark', dark);
-				document.body.classList.toggle('theme-light', !dark);
-				toggle.classList.toggle('on', dark);
+				toggleInput.checked = dark;
+				document.documentElement.classList.toggle('theme-dark', dark);
+				document.documentElement.classList.toggle('theme-light', !dark);
+				if (typeof renderThemeCode === 'function') renderThemeCode();
 			}
 
-			function toggleTheme() { dark = !dark; applyTheme(); }
+			toggleInput.addEventListener('change', () => {
+				dark = toggleInput.checked;
+				applyTheme();
+			});
 
 			// Listen for system preference changes
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
 				dark = e.matches; applyTheme();
 			});
-
-			applyTheme();
 
 			// ── Sidebar active link on scroll ──
 			const sections = document.querySelectorAll('[id]');
@@ -1443,6 +1874,111 @@
 					balls.none.style.backgroundColor = moved ? 'var(--theme-info)' : 'var(--theme-primary)';
 				}
 			}, 2500);
+
+			// ── Live theme editor ──
+			// Variables a person can freely override at runtime.
+			const editableVars = [
+				{ key: '--theme-background',          label: 'Background',          type: 'color' },
+				{ key: '--theme-background-contrast',  label: 'Bg Contrast', type: 'color' },
+				{ key: '--theme-primary',             label: 'Primary',             type: 'color' },
+				{ key: '--theme-primary-contrast',    label: 'Primary Contrast',    type: 'color' },
+				{ key: '--theme-accent',              label: 'Accent',              type: 'color' },
+				{ key: '--theme-accent-contrast',     label: 'Accent Contrast',     type: 'color' },
+				{ key: '--theme-info',                label: 'Info',                type: 'color' },
+				{ key: '--theme-success',             label: 'Success',             type: 'color' },
+				{ key: '--theme-warn',                label: 'Warn',                type: 'color' },
+				{ key: '--theme-danger',              label: 'Danger',              type: 'color' },
+				{ key: '--theme-black',               label: 'Black',               type: 'color' },
+				{ key: '--theme-white',               label: 'White',               type: 'color' },
+				{ key: '--theme-radius',              label: 'Radius',              type: 'text'  },
+				{ key: '--theme-animation',           label: 'Animation',           type: 'text'  },
+				{ key: '--theme-content-width',       label: 'Content Width',       type: 'text'  },
+				{ key: '--theme-font',                label: 'Font',                type: 'text'  },
+			];
+
+			// Light/dark-computed variables — shown for reference only. Editing these
+			// directly would fight the automatic light/dark switching above.
+			const readonlyVars = [
+				'--theme-surface', '--theme-border', '--theme-muted', '--theme-text',
+				'--theme-darker', '--theme-lighter', '--theme-shade', '--theme-shade-alt',
+			];
+
+			// getComputedStyle returns colors as rgb()/rgba() — <input type="color">
+			// needs a hex string, so normalize whatever the actual page is using.
+			function hexify(value) {
+				value = (value || '').trim();
+				if (/^#[0-9a-f]{6}$/i.test(value)) return value;
+				const nums = value.match(/[\d.]+/g);
+				if (!nums || nums.length < 3) return '#000000';
+				const [r, g, b] = nums.map(n => Math.round(parseFloat(n)));
+				return '#' + [r, g, b].map(n => Math.max(0, Math.min(255, n)).toString(16).padStart(2, '0')).join('');
+			}
+
+			// Seed initial state straight from the page's own computed :root values,
+			// so the controls & reference block start out perfectly in sync with
+			// whatever css-utils.css actually shipped — never a hardcoded guess.
+			const themeState = {};
+			function seedThemeState() {
+				const live = getComputedStyle(document.documentElement);
+				editableVars.forEach(v => {
+					const raw = live.getPropertyValue(v.key).trim();
+					themeState[v.key] = v.type === 'color' ? hexify(raw) : raw;
+				});
+			}
+			seedThemeState();
+
+			const themeControls = document.getElementById('themeControls');
+			const themeCode = document.getElementById('themeCode');
+
+			function renderThemeControls() {
+				themeControls.innerHTML = editableVars.map(v => `
+					<label class="theme-control">
+						<span class="fs-1 fg-muted">${v.label}</span>
+						<input type="${v.type}" class="input" data-var="${v.key}" value="${themeState[v.key]}">
+					</label>
+				`).join('');
+				themeControls.querySelectorAll('[data-var]').forEach(input => {
+					input.addEventListener('input', () => {
+						themeState[input.dataset.var] = input.value;
+						document.documentElement.style.setProperty(input.dataset.var, input.value);
+						renderThemeCode();
+					});
+				});
+			}
+
+			function renderThemeCode() {
+				const live = getComputedStyle(document.documentElement);
+				const lines = [];
+				lines.push('// Theme colors -- what ever you like');
+				['--theme-background', '--theme-background-contrast', '--theme-primary', '--theme-primary-contrast',
+					'--theme-accent', '--theme-accent-contrast', '--theme-info', '--theme-success', '--theme-warn',
+					'--theme-danger', '--theme-black', '--theme-white'].forEach(k => {
+					const v = themeState[k] !== undefined ? themeState[k] : live.getPropertyValue(k).trim();
+					lines.push(`\t${k}: ${v};`);
+				});
+				lines.push('');
+				lines.push('\t// Misc');
+				['--theme-animation', '--theme-content-width', '--theme-font', '--theme-radius'].forEach(k => {
+					lines.push(`\t${k}: ${themeState[k]};`);
+				});
+				lines.push('');
+				lines.push('\t// Theme dependant (light/dark) — resolved for the current mode');
+				readonlyVars.forEach(k => {
+					lines.push(`\t${k}: ${live.getPropertyValue(k).trim()};`);
+				});
+				themeCode.textContent = `:root {\n${lines.join('\n')}\n}`;
+			}
+
+			document.getElementById('themeReset').addEventListener('click', () => {
+				editableVars.forEach(v => document.documentElement.style.removeProperty(v.key));
+				seedThemeState();
+				renderThemeControls();
+				renderThemeCode();
+			});
+
+			applyTheme();
+			renderThemeControls();
+			renderThemeCode();
 		</script>
 	</body>
 </html>

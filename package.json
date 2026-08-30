@@ -1,10 +1,12 @@
 {
 	"name": "@ztimson/css-utils",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"description": "CSS Utility Classes",
 	"readme": "README.md",
 	"scripts": {
-		"build": "npx sass src/main.scss > dist/css-utils.css && npx sass src/main.scss --style compressed > dist/css-utils.min.css"
+		"build": "npm run build:utils && npm run build:comp",
+		"build:comp": "npx sass src/components.scss > dist/components.css && npx sass src/components.scss --style compressed > dist/components.min.css",
+		"build:utils": "npx sass src/utils.scss > dist/css-utils.css && npx sass src/utils.scss --style compressed > dist/css-utils.min.css"
 	},
 	"repository": {
 		"type": "git",
